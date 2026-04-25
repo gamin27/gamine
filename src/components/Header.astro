@@ -1,7 +1,12 @@
 ---
 import HeaderNavItem from './HeaderNavItem.astro';
 
-const pathname = Astro.url.pathname.replace(import.meta.env.BASE_URL, '');
+const normalizedPathname = Astro.url.pathname
+	.replace(import.meta.env.BASE_URL, '/')
+	.replace(/\/$/, '');
+const pathname = normalizedPathname.startsWith('/')
+	? normalizedPathname || '/'
+	: `/${normalizedPathname}`;
 
 const links = [
 	{
@@ -36,10 +41,12 @@ const isActive = (activePaths: string[]) =>
 	);
 ---
 
-<header>
+<header data-site-header>
 	<div class="header-inner">
-		<a class="brand" href="/">gamine</a>
-		<nav>
+		<div class="brand-row">
+			<a class="brand" href="/">gamine.blog</a>
+		</div>
+		<nav class="header-nav">
 			{
 				links.map((link) => (
 					<HeaderNavItem
@@ -53,56 +60,79 @@ const isActive = (activePaths: string[]) =>
 		</nav>
 	</div>
 </header>
+
+<script>
+	const header = document.querySelector('[data-site-header]');
+
+	const updateHeaderState = () => {
+		header?.toggleAttribute('data-condensed', window.scrollY > 8);
+	};
+
+	updateHeaderState();
+	window.addEventListener('scroll', updateHeaderState, { passive: true });
+	window.addEventListener('pageshow', updateHeaderState);
+</script>
+
 <style>
 	header {
+		position: sticky;
+		top: 0;
+		z-index: 10;
 		margin: 0;
 		background: var(--bg);
 		border-bottom: 1px solid rgb(var(--gray-light));
 	}
 	.header-inner {
-		position: relative;
+		display: flex;
+		flex-direction: column;
+		width: min(100% - 32px, 1120px);
+		margin: 0 auto;
+	}
+	.brand-row {
+		display: flex;
+		align-items: center;
+		overflow: hidden;
+		max-height: 3rem;
+		padding: 16px 0 8px;
+		opacity: 1;
+		transform: translateY(0);
+		transition:
+			max-height 0.24s ease,
+			padding 0.24s ease,
+			opacity 0.18s ease,
+			transform 0.24s ease;
+	}
+	header[data-condensed] .brand-row {
+		max-height: 0;
+		padding-top: 0;
+		padding-bottom: 0;
+		opacity: 0;
+		transform: translateY(-8px);
 	}
 	.brand {
-		position: absolute;
-		top: 50%;
-		left: 1rem;
-		z-index: 1;
 		color: #60739f;
 		font-size: 1rem;
 		font-weight: 700;
 		line-height: 1;
 		text-decoration: none;
-		transform: translateY(-50%);
 	}
-	nav {
+	.header-nav {
 		display: flex;
-		align-items: center;
-		justify-content: center;
-		gap: 4rem;
+		align-items: stretch;
+		justify-content: flex-start;
+		overflow-x: auto;
 	}
 	@media (max-width: 720px) {
-		.header-inner {
-			display: grid;
-			grid-template-columns: auto minmax(0, 1fr);
-			align-items: center;
-			min-height: 3.75rem;
+		.brand-row {
+			padding-top: 14px;
+			padding-bottom: 10px;
 		}
 		.brand {
-			position: static;
-			padding-left: 1rem;
 			font-size: 0.95rem;
-			transform: none;
 		}
-		nav {
-			justify-content: space-around;
-			gap: 0;
+		.header-nav {
 			min-width: 0;
 			min-height: 3.75rem;
-		}
-	}
-	@media (min-width: 721px) and (max-width: 860px) {
-		nav {
-			gap: 2rem;
 		}
 	}
 </style>

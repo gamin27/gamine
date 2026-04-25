@@ -9,7 +9,13 @@ interface Props {
 const { href, label, icon, active } = Astro.props;
 ---
 
-<a href={href} class:list={['tab-link', { active }]} aria-label={label}>
+<a
+	href={href}
+	class:list={['tab-link', { active }]}
+	data-active={active ? 'true' : undefined}
+	aria-current={active ? 'page' : undefined}
+	aria-label={label}
+>
 	<svg class="tab-icon" viewBox="0 0 24 24" aria-hidden="true">
 		<path d={icon}></path>
 	</svg>
@@ -22,26 +28,29 @@ const { href, label, icon, active } = Astro.props;
 		position: relative;
 		align-items: center;
 		justify-content: center;
-		min-width: 7rem;
-		padding: 16px 0;
+		margin-right: 16px;
+		padding: 16px 0 8px;
+		border-radius: 4px;
 		color: rgb(var(--gray));
 		font-size: 1rem;
 		font-weight: 700;
 		line-height: 1;
 		text-decoration: none;
+		transition: color 0.2s ease;
 	}
 	.tab-link:hover,
 	.tab-link.active {
 		color: rgb(var(--gray-dark));
 	}
-	.tab-link:hover::after,
-	.tab-link.active::after {
+	.tab-link.active::after,
+	.tab-link[data-active='true']::after,
+	.tab-link[aria-current='page']::after {
 		position: absolute;
 		right: 0;
 		bottom: 0;
 		left: 0;
-		height: 4px;
-		background: rgb(var(--gray-dark));
+		height: 3px;
+		background: currentColor;
 		content: '';
 	}
 	.tab-icon {
@@ -52,22 +61,15 @@ const { href, label, icon, active } = Astro.props;
 	}
 	@media (max-width: 720px) {
 		.tab-link {
-			min-width: 0;
-			width: 25%;
-			padding: 0;
-			min-height: 3.75rem;
+			margin-right: 16px;
+			padding: 16px 0 8px;
+			border-radius: 4px;
 		}
 		.tab-label {
-			display: none;
+			display: inline-block;
 		}
 		.tab-icon {
-			display: block;
-		}
-	}
-	@media (min-width: 721px) and (max-width: 860px) {
-		.tab-link {
-			font-size: 1rem;
-			min-width: 6rem;
+			display: none;
 		}
 	}
 </style>
