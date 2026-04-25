@@ -6,7 +6,14 @@ import globals from 'globals';
 
 export default [
 	{
-		ignores: ['**/dist/', '**/.astro/', '**/node_modules/', '**/.claude/', 'public/pagefind/'],
+		ignores: [
+			'**/dist/',
+			'**/.astro/',
+			'**/.vercel/',
+			'**/node_modules/',
+			'**/.claude/',
+			'public/pagefind/',
+		],
 	},
 	js.configs.recommended,
 	...tseslint.configs.recommended,
