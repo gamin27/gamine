@@ -177,6 +177,11 @@ const careers = [
 				font-size: 28px;
 				line-height: 1.4;
 			}
+			.career,
+			.details-row,
+			.details dd {
+				min-width: 0;
+			}
 			.role {
 				margin: 0 0 18px;
 				color: rgb(var(--black));
@@ -201,6 +206,16 @@ const careers = [
 			}
 			.details dd {
 				margin: 0;
+				overflow-wrap: anywhere;
+				word-break: break-word;
+			}
+			.details a {
+				color: rgb(var(--gray));
+				overflow-wrap: anywhere;
+				word-break: break-word;
+			}
+			.details a:hover {
+				color: rgb(var(--black));
 			}
 			@media (max-width: 560px) {
 				.about {

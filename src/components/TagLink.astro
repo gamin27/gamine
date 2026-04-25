@@ -25,6 +25,10 @@ const { tag, count } = Astro.props;
 		font-weight: 700;
 		line-height: 1;
 		text-decoration: none;
+		transition: color var(--transition-hover);
+	}
+	a:hover {
+		color: rgb(var(--black));
 	}
 	.count {
 		margin-left: 0.4em;
