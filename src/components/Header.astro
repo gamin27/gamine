@@ -1,4 +1,6 @@
 ---
+import HeaderNavItem from './HeaderNavItem.astro';
+
 const pathname = Astro.url.pathname.replace(import.meta.env.BASE_URL, '');
 
 const links = [
@@ -40,16 +42,12 @@ const isActive = (activePaths: string[]) =>
 		<nav>
 			{
 				links.map((link) => (
-					<a
+					<HeaderNavItem
 						href={link.href}
-						class:list={['tab-link', { active: isActive(link.activePaths) }]}
-						aria-label={link.label}
-					>
-						<svg class="tab-icon" viewBox="0 0 24 24" aria-hidden="true">
-							<path d={link.icon} />
-						</svg>
-						<span class="tab-label">{link.label}</span>
-					</a>
+						label={link.label}
+						icon={link.icon}
+						active={isActive(link.activePaths)}
+					/>
 				))
 			}
 		</nav>
@@ -63,12 +61,11 @@ const isActive = (activePaths: string[]) =>
 	}
 	.header-inner {
 		position: relative;
-		min-height: 5rem;
 	}
 	.brand {
 		position: absolute;
 		top: 50%;
-		left: 1.5rem;
+		left: 1rem;
 		z-index: 1;
 		color: #60739f;
 		font-size: 1rem;
@@ -82,39 +79,6 @@ const isActive = (activePaths: string[]) =>
 		align-items: center;
 		justify-content: center;
 		gap: 4rem;
-		min-height: 5rem;
-	}
-	.tab-link {
-		display: flex;
-		position: relative;
-		align-items: center;
-		justify-content: center;
-		min-width: 7rem;
-		min-height: 5rem;
-		color: rgb(var(--gray));
-		font-size: 1rem;
-		font-weight: 700;
-		line-height: 1;
-		text-decoration: none;
-	}
-	.tab-link:hover,
-	.tab-link.active {
-		color: rgb(var(--gray-dark));
-	}
-	.tab-link.active::after {
-		position: absolute;
-		right: 0;
-		bottom: 0;
-		left: 0;
-		height: 4px;
-		background: rgb(var(--gray-dark));
-		content: '';
-	}
-	.tab-icon {
-		display: none;
-		width: 1.8rem;
-		height: 1.8rem;
-		fill: currentColor;
 	}
 	@media (max-width: 720px) {
 		.header-inner {
@@ -135,25 +99,10 @@ const isActive = (activePaths: string[]) =>
 			min-width: 0;
 			min-height: 3.75rem;
 		}
-		.tab-link {
-			min-width: 0;
-			width: 25%;
-			min-height: 3.75rem;
-		}
-		.tab-label {
-			display: none;
-		}
-		.tab-icon {
-			display: block;
-		}
 	}
 	@media (min-width: 721px) and (max-width: 860px) {
 		nav {
 			gap: 2rem;
-		}
-		.tab-link {
-			font-size: 1rem;
-			min-width: 6rem;
 		}
 	}
 </style>

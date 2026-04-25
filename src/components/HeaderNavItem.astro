@@ -1,0 +1,73 @@
+---
+interface Props {
+	href: string;
+	label: string;
+	icon: string;
+	active: boolean;
+}
+
+const { href, label, icon, active } = Astro.props;
+---
+
+<a href={href} class:list={['tab-link', { active }]} aria-label={label}>
+	<svg class="tab-icon" viewBox="0 0 24 24" aria-hidden="true">
+		<path d={icon}></path>
+	</svg>
+	<span class="tab-label">{label}</span>
+</a>
+
+<style>
+	.tab-link {
+		display: flex;
+		position: relative;
+		align-items: center;
+		justify-content: center;
+		min-width: 7rem;
+		padding: 16px 0;
+		color: rgb(var(--gray));
+		font-size: 1rem;
+		font-weight: 700;
+		line-height: 1;
+		text-decoration: none;
+	}
+	.tab-link:hover,
+	.tab-link.active {
+		color: rgb(var(--gray-dark));
+	}
+	.tab-link:hover::after,
+	.tab-link.active::after {
+		position: absolute;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		height: 4px;
+		background: rgb(var(--gray-dark));
+		content: '';
+	}
+	.tab-icon {
+		display: none;
+		width: 1.8rem;
+		height: 1.8rem;
+		fill: currentColor;
+	}
+	@media (max-width: 720px) {
+		.tab-link {
+			min-width: 0;
+			width: 25%;
+			padding: 0;
+			min-height: 3.75rem;
+		}
+		.tab-label {
+			display: none;
+		}
+		.tab-icon {
+			display: block;
+		}
+	}
+	@media (min-width: 721px) and (max-width: 860px) {
+		.tab-link {
+			font-size: 1rem;
+			min-width: 6rem;
+		}
+	}
+</style>
