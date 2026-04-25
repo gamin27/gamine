@@ -102,10 +102,10 @@ const careers = [
 			.period span + span::before {
 				content: ' ';
 			}
-			.hero-content h1 {
+			.hero-content h2 {
 				margin: 0 0 24px;
 				color: rgb(var(--black));
-				font-size: 32px;
+				font-size: 24px;
 				line-height: 1.4;
 			}
 			.hero-content p {
@@ -143,7 +143,17 @@ const careers = [
 				border-radius: 50%;
 				background: var(--brand);
 			}
-			.career h2 {
+			.timeline-section {
+				display: grid;
+				gap: 24px;
+			}
+			.timeline-title {
+				margin: 0;
+				color: rgb(var(--black));
+				font-size: 24px;
+				line-height: 1.4;
+			}
+			.career h3 {
 				margin: 0 0 4px;
 				color: rgb(var(--black));
 				font-size: 28px;
@@ -181,8 +191,8 @@ const careers = [
 				.hero {
 					margin-left: 0;
 				}
-				.hero-content h1 {
-					font-size: 28px;
+				.hero-content h2 {
+					font-size: 22px;
 				}
 				.hero-content p {
 					font-size: 18px;
@@ -191,8 +201,11 @@ const careers = [
 				.timeline {
 					gap: 40px;
 				}
-				.career h2 {
+				.career h3 {
 					font-size: 24px;
+				}
+				.timeline-title {
+					font-size: 22px;
 				}
 				.details-row {
 					grid-template-columns: 1fr;
@@ -206,49 +219,52 @@ const careers = [
 			<section class="about">
 				<div class="hero">
 					<div class="hero-content">
-						<h1>この先やってみたいこと</h1>
+						<h2>この先やってみたいこと</h2>
 						<p>
 							{features}
 						</p>
 					</div>
 				</div>
 
-				<div class="timeline" aria-label="職歴">
-					{
-						careers.map((career) => (
-							<section class="timeline-item">
-								<div class="marker" aria-hidden="true" />
-								<div class="career">
-									<div class="period">
-										{career.period.map((line) => (
-											<span>{line}</span>
-										))}
+				<section class="timeline-section" aria-labelledby="timeline-title">
+					<h2 id="timeline-title" class="timeline-title">経歴</h2>
+					<div class="timeline">
+						{
+							careers.map((career) => (
+								<section class="timeline-item">
+									<div class="marker" aria-hidden="true" />
+									<div class="career">
+										<div class="period">
+											{career.period.map((line) => (
+												<span>{line}</span>
+											))}
+										</div>
+										<h3>{career.company}</h3>
+										<p class="role">{career.role}</p>
+										<dl class="details">
+											{career.details.map((detail) => (
+												<div class="details-row">
+													<dt>{detail.term}</dt>
+													<dd>
+														{detail.description.split(/(https?:\/\/[^\s)）]+)/g).map((part) =>
+															/^https?:\/\//.test(part) ? (
+																<a href={part} target="_blank" rel="noopener noreferrer">
+																	{part}
+																</a>
+															) : (
+																part
+															),
+														)}
+													</dd>
+												</div>
+											))}
+										</dl>
 									</div>
-									<h2>{career.company}</h2>
-									<p class="role">{career.role}</p>
-									<dl class="details">
-										{career.details.map((detail) => (
-											<div class="details-row">
-												<dt>{detail.term}</dt>
-												<dd>
-													{detail.description.split(/(https?:\/\/[^\s)）]+)/g).map((part) =>
-														/^https?:\/\//.test(part) ? (
-															<a href={part} target="_blank" rel="noopener noreferrer">
-																{part}
-															</a>
-														) : (
-															part
-														),
-													)}
-												</dd>
-											</div>
-										))}
-									</dl>
-								</div>
-							</section>
-						))
-					}
-				</div>
+								</section>
+							))
+						}
+					</div>
+				</section>
 			</section>
 		</Main>
 		<Footer />
