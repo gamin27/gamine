@@ -61,22 +61,10 @@ const isActive = (activePaths: string[]) =>
 	</div>
 </header>
 
-<script>
-	const header = document.querySelector('[data-site-header]');
-
-	const updateHeaderState = () => {
-		header?.toggleAttribute('data-condensed', window.scrollY > 8);
-	};
-
-	updateHeaderState();
-	window.addEventListener('scroll', updateHeaderState, { passive: true });
-	window.addEventListener('pageshow', updateHeaderState);
-</script>
-
 <style>
 	header {
 		position: sticky;
-		top: 0;
+		top: -48px;
 		z-index: 10;
 		margin: 0;
 		background: var(--bg);
@@ -91,27 +79,11 @@ const isActive = (activePaths: string[]) =>
 	.brand-row {
 		display: flex;
 		align-items: center;
-		overflow: hidden;
-		max-height: 3rem;
 		padding: 16px 0 8px;
-		opacity: 1;
-		transform: translateY(0);
-		transition:
-			max-height 0.24s ease,
-			padding 0.24s ease,
-			opacity 0.18s ease,
-			transform 0.24s ease;
-	}
-	header[data-condensed] .brand-row {
-		max-height: 0;
-		padding-top: 0;
-		padding-bottom: 0;
-		opacity: 0;
-		transform: translateY(-8px);
 	}
 	.brand {
 		color: #60739f;
-		font-size: 1rem;
+		font-size: 24px;
 		font-weight: 700;
 		line-height: 1;
 		text-decoration: none;
@@ -126,9 +98,6 @@ const isActive = (activePaths: string[]) =>
 		.brand-row {
 			padding-top: 14px;
 			padding-bottom: 10px;
-		}
-		.brand {
-			font-size: 0.95rem;
 		}
 		.header-nav {
 			min-width: 0;
