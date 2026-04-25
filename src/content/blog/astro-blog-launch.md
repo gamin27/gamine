@@ -2,7 +2,6 @@
 title: 'Astroで爆速ブログを始めた話'
 description: 'Astro + Markdown + Vercel で個人ブログを立ち上げた経緯と、「必要なものだけ入れる」というAstroの思想に惚れた話。'
 pubDate: 'Apr 25 2026'
-heroImage: '../../assets/blog-placeholder-1.jpg'
 tags: ['astro', 'blog', 'vercel', 'getting-started']
 ---
 
