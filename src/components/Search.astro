@@ -1,0 +1,27 @@
+---
+---
+<link href="/pagefind/pagefind-ui.css" rel="stylesheet" />
+<div id="search"></div>
+<script is:inline src="/pagefind/pagefind-ui.js"></script>
+<script is:inline>
+  window.addEventListener('DOMContentLoaded', () => {
+    new PagefindUI({
+      element: '#search',
+      showSubResults: true,
+      showImages: false,
+      translations: {
+        placeholder: 'キーワードで検索',
+        clear_search: 'クリア',
+        load_more: 'さらに読み込む',
+        search_label: 'サイト内を検索',
+        filters_label: 'フィルター',
+        zero_results: '"[SEARCH_TERM]" に一致する結果はありません',
+        many_results: '"[SEARCH_TERM]" の検索結果 [COUNT] 件',
+        one_result: '"[SEARCH_TERM]" の検索結果 [COUNT] 件',
+        alt_search: '"[SEARCH_TERM]" の結果が見つかりませんでした。代わりに "[DIFFERENT_TERM]" で検索しています',
+        search_suggestion: '"[SEARCH_TERM]" に一致する結果はありません。代わりに以下で検索してみてください:',
+        searching: '"[SEARCH_TERM]" を検索中…',
+      },
+    });
+  });
+</script>
