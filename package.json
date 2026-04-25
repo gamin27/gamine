@@ -1,37 +1,37 @@
 {
-  "name": "gamine",
-  "type": "module",
-  "version": "0.0.1",
-  "engines": {
-    "node": ">=22.12.0"
-  },
-  "scripts": {
-    "dev": "astro dev",
-    "build": "astro build && pagefind --site dist",
-    "preview": "astro preview",
-    "astro": "astro",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
-    "format": "prettier --write .",
-    "format:check": "prettier --check ."
-  },
-  "dependencies": {
-    "@astrojs/mdx": "^5.0.4",
-    "@astrojs/rss": "^4.0.18",
-    "@astrojs/sitemap": "^3.7.2",
-    "@astrojs/vercel": "^10.0.5",
-    "astro": "^6.1.9",
-    "sharp": "^0.34.3"
-  },
-  "devDependencies": {
-    "eslint": "^9.39.4",
-    "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-astro": "^1.7.0",
-    "eslint-plugin-jsx-a11y": "^6.10.2",
-    "globals": "^17.5.0",
-    "pagefind": "^1.5.2",
-    "prettier": "^3.8.3",
-    "prettier-plugin-astro": "^0.14.1",
-    "typescript-eslint": "^8.59.0"
-  }
+	"name": "gamine",
+	"type": "module",
+	"version": "0.0.1",
+	"engines": {
+		"node": ">=22.12.0"
+	},
+	"scripts": {
+		"dev": "astro dev",
+		"build": "astro build && pagefind --site dist",
+		"preview": "astro preview",
+		"astro": "astro",
+		"lint": "eslint .",
+		"lint:fix": "eslint . --fix",
+		"format": "prettier --write .",
+		"format:check": "prettier --check ."
+	},
+	"dependencies": {
+		"@astrojs/mdx": "^5.0.4",
+		"@astrojs/rss": "^4.0.18",
+		"@astrojs/sitemap": "^3.7.2",
+		"@astrojs/vercel": "^10.0.5",
+		"astro": "^6.1.9",
+		"sharp": "^0.34.3"
+	},
+	"devDependencies": {
+		"eslint": "^9.39.4",
+		"eslint-config-prettier": "^10.1.8",
+		"eslint-plugin-astro": "^1.7.0",
+		"eslint-plugin-jsx-a11y": "^6.10.2",
+		"globals": "^17.5.0",
+		"pagefind": "^1.5.2",
+		"prettier": "^3.8.3",
+		"prettier-plugin-astro": "^0.14.1",
+		"typescript-eslint": "^8.59.0"
+	}
 }

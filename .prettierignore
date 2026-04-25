@@ -1,5 +1,6 @@
 dist/
 .astro/
+.claude/
 node_modules/
 public/pagefind/
 package-lock.json
