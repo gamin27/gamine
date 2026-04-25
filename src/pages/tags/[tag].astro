@@ -2,9 +2,9 @@
 import { type CollectionEntry, getCollection } from 'astro:content';
 import BaseHead from '../../components/BaseHead.astro';
 import Footer from '../../components/Footer.astro';
-import FormattedDate from '../../components/FormattedDate.astro';
 import Header from '../../components/Header.astro';
 import Main from '../../components/Main.astro';
+import PostListItem from '../../components/PostListItem.astro';
 import { SITE_TITLE } from '../../consts';
 
 export async function getStaticPaths() {
@@ -35,35 +35,20 @@ const { posts } = Astro.props;
 		<style>
 			h1 {
 				margin: 0 0 1em 0;
+				font-size: 18px;
 			}
 			ul {
 				list-style: none;
+				margin: 0;
 				padding: 0;
-			}
-			li {
-				display: flex;
-				justify-content: space-between;
-				align-items: baseline;
-				gap: 1em;
-				padding: 0.6em 0;
-				border-bottom: 1px solid rgb(var(--gray-light));
-			}
-			a {
-				color: rgb(var(--black));
-				text-decoration: none;
-			}
-			a:hover {
-				color: rgb(var(--accent));
-			}
-			.date {
-				color: rgb(var(--gray));
-				font-size: 0.9em;
-				white-space: nowrap;
 			}
 			.back {
 				display: inline-block;
 				margin-bottom: 1.5em;
 				color: rgb(var(--gray));
+			}
+			.back:hover {
+				color: rgb(var(--black));
 			}
 		</style>
 	</head>
@@ -75,12 +60,7 @@ const { posts } = Astro.props;
 			<ul>
 				{
 					posts.map((post) => (
-						<li>
-							<a href={`/blog/${post.id}/`}>{post.data.title}</a>
-							<span class="date">
-								<FormattedDate date={post.data.pubDate} />
-							</span>
-						</li>
+						<PostListItem id={post.id} title={post.data.title} pubDate={post.data.pubDate} />
 					))
 				}
 			</ul>
