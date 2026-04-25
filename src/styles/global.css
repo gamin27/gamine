@@ -18,7 +18,7 @@
 		0 16px 32px rgba(var(--gray), 33%);
 }
 body {
-	font-family: var(--font-noto-serif-jp);
+	font-family: 'Hiragino Mincho ProN', 'Yu Mincho', 'YuMincho', serif;
 	margin: 0;
 	padding: 0;
 	text-align: left;
