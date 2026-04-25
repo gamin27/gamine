@@ -30,7 +30,7 @@ body {
 }
 main {
 	width: 720px;
-	max-width: calc(100% - 32px);
+	max-width: calc(100% - 64px);
 	margin: auto;
 	padding: 3em 0;
 }
