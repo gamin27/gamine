@@ -4,40 +4,46 @@ import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
+import TagLink from '../components/TagLink.astro';
 
 type Props = CollectionEntry<'blog'>['data'];
 
 const { title, description, pubDate, updatedDate, tags = [] } = Astro.props;
 ---
 
-<html lang="en">
+<html lang="ja">
 	<head>
 		<BaseHead title={title} description={description} />
 		<style>
 			main {
-				width: calc(100% - 2em);
-				max-width: 100%;
+				width: 100%;
+				max-width: none;
 				margin: 0;
+				padding: 0;
 			}
 			.prose {
 				width: 720px;
-				max-width: calc(100% - 2em);
+				max-width: calc(100% - 64px);
 				margin: auto;
-				padding: 1em;
+				padding: 48px 0;
 				color: rgb(var(--gray-dark));
 			}
 			.title {
-				margin-bottom: 1em;
-				padding: 1em 0;
-				text-align: center;
-				line-height: 1;
+				margin-bottom: 2rem;
+				padding: 0 0 1rem;
+				text-align: left;
+				line-height: 1.4;
 			}
 			.title h1 {
-				margin: 0 0 0.5em 0;
+				margin: 0;
+				font-size: 24px;
+				line-height: 1.4;
 			}
 			.date {
-				margin-bottom: 0.5em;
+				margin-top: 4px;
 				color: rgb(var(--gray));
+				font-size: 12px;
+				line-height: 1.4;
 			}
 			.last-updated-on {
 				font-style: italic;
@@ -45,22 +51,37 @@ const { title, description, pubDate, updatedDate, tags = [] } = Astro.props;
 			.tags {
 				display: flex;
 				flex-wrap: wrap;
-				gap: 0.5em;
-				justify-content: center;
-				margin-top: 1em;
+				justify-content: flex-start;
+				margin-top: 1rem;
 			}
-			.tags a {
-				display: inline-block;
-				padding: 0.2em 0.7em;
-				border: 1px solid rgb(var(--gray-light));
-				border-radius: 999px;
-				font-size: 0.85em;
-				color: rgb(var(--gray-dark));
-				text-decoration: none;
+			.prose :global(h2) {
+				padding-bottom: 0.35rem;
+				border-bottom: 1px solid rgba(var(--gray), 0.35);
+				font-size: 24px;
 			}
-			.tags a:hover {
-				border-color: rgb(var(--accent));
-				color: rgb(var(--accent));
+			.prose :global(h3) {
+				font-size: 22px;
+			}
+			.prose :global(h4) {
+				font-size: 20px;
+			}
+			.prose :global(h5) {
+				font-size: 18px;
+			}
+			.prose :global(h6) {
+				font-size: 16px;
+			}
+			.prose :global(pre),
+			.prose :global(.astro-code) {
+				border: 1px solid rgba(var(--gray), 0.2);
+			}
+			.prose :global(blockquote) {
+				border-left-color: rgb(var(--gray));
+			}
+			@media (max-width: 720px) {
+				.prose {
+					padding: 16px 0;
+				}
 			}
 		</style>
 	</head>
@@ -71,6 +92,7 @@ const { title, description, pubDate, updatedDate, tags = [] } = Astro.props;
 			<article data-pagefind-body>
 				<div class="prose">
 					<div class="title">
+						<h1>{title}</h1>
 						<div class="date">
 							<FormattedDate date={pubDate} />
 							{
@@ -81,17 +103,15 @@ const { title, description, pubDate, updatedDate, tags = [] } = Astro.props;
 								)
 							}
 						</div>
-						<h1>{title}</h1>
 						{
 							tags.length > 0 && (
 								<div class="tags">
 									{tags.map((tag) => (
-										<a href={`/tags/${tag}/`}>#{tag}</a>
+										<TagLink tag={tag} />
 									))}
 								</div>
 							)
 						}
-						<hr />
 					</div>
 					<slot />
 				</div>

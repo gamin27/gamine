@@ -1,0 +1,35 @@
+---
+interface Props {
+	tag: string;
+	count?: number;
+}
+
+const { tag, count } = Astro.props;
+---
+
+<a href={`/tags/${tag}/`}>
+	#{tag}
+	{count !== undefined && <span class="count">({count})</span>}
+</a>
+
+<style>
+	a {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin-right: 16px;
+		margin-bottom: 8px;
+		border-bottom: 1px solid transparent;
+		color: rgb(var(--gray));
+		font-size: 1rem;
+		font-weight: 700;
+		line-height: 1;
+		text-decoration: none;
+	}
+	a:hover {
+		border-bottom-color: currentColor;
+	}
+	.count {
+		margin-left: 0.4em;
+	}
+</style>
