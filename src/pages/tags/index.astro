@@ -1,0 +1,77 @@
+---
+import { getCollection } from 'astro:content';
+import BaseHead from '../../components/BaseHead.astro';
+import Footer from '../../components/Footer.astro';
+import Header from '../../components/Header.astro';
+import { SITE_TITLE } from '../../consts';
+
+const posts = await getCollection('blog');
+const tagCounts = posts
+	.flatMap((post) => post.data.tags)
+	.reduce<Record<string, number>>((acc, tag) => {
+		acc[tag] = (acc[tag] ?? 0) + 1;
+		return acc;
+	}, {});
+const tags = Object.entries(tagCounts).sort(([a], [b]) => a.localeCompare(b));
+---
+
+<!doctype html>
+<html lang="ja">
+	<head>
+		<BaseHead title={`タグ一覧 | ${SITE_TITLE}`} description="すべてのタグ" />
+		<style>
+			main {
+				width: 960px;
+				max-width: calc(100% - 2em);
+				margin: auto;
+				padding: 3em 1em;
+			}
+			ul {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 0.75rem;
+				list-style: none;
+				padding: 0;
+			}
+			a {
+				display: inline-block;
+				padding: 0.4em 0.9em;
+				border: 1px solid rgb(var(--gray-light));
+				border-radius: 999px;
+				text-decoration: none;
+				color: rgb(var(--black));
+			}
+			a:hover {
+				border-color: rgb(var(--accent));
+				color: rgb(var(--accent));
+			}
+			.count {
+				color: rgb(var(--gray));
+				margin-left: 0.4em;
+			}
+		</style>
+	</head>
+	<body>
+		<Header />
+		<main>
+			<h1>タグ一覧</h1>
+			{
+				tags.length === 0 ? (
+					<p>まだタグがありません。</p>
+				) : (
+					<ul>
+						{tags.map(([tag, count]) => (
+							<li>
+								<a href={`/tags/${tag}/`}>
+									#{tag}
+									<span class="count">({count})</span>
+								</a>
+							</li>
+						))}
+					</ul>
+				)
+			}
+		</main>
+		<Footer />
+	</body>
+</html>
