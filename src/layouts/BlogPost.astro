@@ -13,7 +13,15 @@ const { title, description, pubDate, updatedDate, tags = [] } = Astro.props;
 
 <html lang="ja">
 	<head>
-		<BaseHead title={title} description={description} />
+		<BaseHead
+			title={title}
+			description={description}
+			imageAlt={`${title} | gamine.blog`}
+			type="article"
+			publishedTime={pubDate}
+			modifiedTime={updatedDate}
+			tags={tags}
+		/>
 		<style>
 			main {
 				width: 100%;

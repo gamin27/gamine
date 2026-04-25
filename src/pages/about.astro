@@ -1,5 +1,4 @@
 ---
-import { parse } from 'astro:schema';
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
@@ -85,6 +84,25 @@ const careers = [
 			.about {
 				display: grid;
 				gap: 56px;
+			}
+			.profile {
+				display: flex;
+				align-items: center;
+				gap: 0.4em;
+				font-size: 32px;
+			}
+			.profile-icon {
+				width: 64px;
+				height: 64px;
+				border-radius: 50%;
+				background: #fff;
+				object-fit: cover;
+			}
+			.profile h1 {
+				margin: 0;
+				color: rgb(var(--black));
+				font-size: 1em;
+				line-height: 1.2;
 			}
 			.hero {
 				max-width: 760px;
@@ -188,6 +206,9 @@ const careers = [
 				.about {
 					gap: 40px;
 				}
+				.profile {
+					font-size: 28px;
+				}
 				.hero {
 					margin-left: 0;
 				}
@@ -217,6 +238,11 @@ const careers = [
 		<Header />
 		<Main width="960px">
 			<section class="about">
+				<div class="profile">
+					<img class="profile-icon" src="/favicon.png" alt="" />
+					<h1>gamine</h1>
+				</div>
+
 				<div class="hero">
 					<div class="hero-content">
 						<h2>この先やってみたいこと</h2>

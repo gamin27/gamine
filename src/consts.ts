@@ -3,3 +3,5 @@
 
 export const SITE_TITLE = 'gamine.blog';
 export const SITE_DESCRIPTION = 'Welcome to my website!';
+export const SITE_URL = 'https://gamine.blog';
+export const TWITTER_HANDLE = '@homusuke';
