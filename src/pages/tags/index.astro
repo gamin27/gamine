@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import BaseHead from '../../components/BaseHead.astro';
 import Footer from '../../components/Footer.astro';
 import Header from '../../components/Header.astro';
+import Main from '../../components/Main.astro';
 import { SITE_TITLE } from '../../consts';
 
 const posts = await getCollection('blog');
@@ -18,13 +19,10 @@ const tags = Object.entries(tagCounts).sort(([a], [b]) => a.localeCompare(b));
 <!doctype html>
 <html lang="ja">
 	<head>
-		<BaseHead title={`タグ一覧 | ${SITE_TITLE}`} description="すべてのタグ" />
+		<BaseHead title={`タグで探す | ${SITE_TITLE}`} description="すべてのタグ" />
 		<style>
-			main {
-				width: 960px;
-				max-width: calc(100% - 2em);
-				margin: auto;
-				padding: 3em 1em;
+			h1 {
+				font-size: 16px;
 			}
 			ul {
 				display: flex;
@@ -37,21 +35,16 @@ const tags = Object.entries(tagCounts).sort(([a], [b]) => a.localeCompare(b));
 				align-items: center;
 				justify-content: center;
 				margin-right: 16px;
-				padding: 8px 12px;
-				border-radius: 4px;
+				margin-bottom: 8px;
+				border-bottom: 1px solid transparent;
 				color: rgb(var(--gray));
-				background: transparent;
 				font-size: 1rem;
 				font-weight: 700;
 				line-height: 1;
 				text-decoration: none;
-				transition:
-					color var(--transition-hover),
-					background-color var(--transition-hover);
 			}
 			a:hover {
-				color: var(--bg);
-				background: rgb(var(--gray));
+				border-bottom-color: currentColor;
 			}
 			.count {
 				margin-left: 0.4em;
@@ -60,8 +53,8 @@ const tags = Object.entries(tagCounts).sort(([a], [b]) => a.localeCompare(b));
 	</head>
 	<body>
 		<Header />
-		<main>
-			<h1>タグ一覧</h1>
+		<Main width="960px">
+			<h1>タグで探す</h1>
 			{
 				tags.length === 0 ? (
 					<p>まだタグがありません。</p>
@@ -78,7 +71,7 @@ const tags = Object.entries(tagCounts).sort(([a], [b]) => a.localeCompare(b));
 					</ul>
 				)
 			}
-		</main>
+		</Main>
 		<Footer />
 	</body>
 </html>

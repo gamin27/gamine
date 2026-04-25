@@ -1,0 +1,25 @@
+---
+interface Props {
+	width?: string;
+}
+
+const { width = '720px' } = Astro.props;
+---
+
+<main style={`--main-width: ${width};`}>
+	<slot />
+</main>
+
+<style>
+	main {
+		width: var(--main-width);
+		max-width: calc(100% - 64px);
+		margin: 0 auto;
+		padding: 3em 0;
+	}
+	@media (max-width: 720px) {
+		main {
+			padding: 1em 0;
+		}
+	}
+</style>

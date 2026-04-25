@@ -2,6 +2,7 @@
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
+import Main from '../components/Main.astro';
 import Search from '../components/Search.astro';
 import { SITE_TITLE } from '../consts';
 ---
@@ -9,25 +10,20 @@ import { SITE_TITLE } from '../consts';
 <!doctype html>
 <html lang="ja">
 	<head>
-		<BaseHead title={`検索 | ${SITE_TITLE}`} description="サイト内検索" />
+		<BaseHead title={`検索する | ${SITE_TITLE}`} description="サイト内検索" />
 		<style>
-			main {
-				width: 960px;
-				max-width: calc(100% - 2em);
-				margin: auto;
-				padding: 3em 1em;
-			}
 			h1 {
 				margin: 0 0 1em 0;
+				font-size: 16px;
 			}
 		</style>
 	</head>
 	<body>
 		<Header />
-		<main>
-			<h1>検索</h1>
+		<Main width="960px">
+			<h1>検索する</h1>
 			<Search />
-		</main>
+		</Main>
 		<Footer />
 	</body>
 </html>
