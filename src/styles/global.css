@@ -119,6 +119,7 @@ hr {
 		--font-size-body: 16px;
 	}
 	main {
+		max-width: calc(100% - 32px);
 		padding: 1em 0;
 	}
 }

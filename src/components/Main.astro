@@ -17,4 +17,9 @@ const { width = '720px' } = Astro.props;
 		margin: 0 auto;
 		padding: 48px 0;
 	}
+	@media (max-width: 720px) {
+		main {
+			max-width: calc(100% - 32px);
+		}
+	}
 </style>

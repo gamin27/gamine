@@ -90,6 +90,7 @@ const { title, description, pubDate, updatedDate, tags = [] } = Astro.props;
 			}
 			@media (max-width: 720px) {
 				.prose {
+					max-width: calc(100% - 32px);
 					padding: 16px 0;
 				}
 			}

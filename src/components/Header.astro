@@ -86,6 +86,9 @@ const isActive = (activePaths: string[]) =>
 		overflow-x: auto;
 	}
 	@media (max-width: 720px) {
+		.header-inner {
+			width: min(100% - 32px, 1120px);
+		}
 		.brand-row {
 			padding-top: 14px;
 			padding-bottom: 10px;
