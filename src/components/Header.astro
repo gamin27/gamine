@@ -13,25 +13,21 @@ const links = [
 		href: '/',
 		label: 'Blog',
 		activePaths: ['/', '/blog'],
-		icon: 'M19 5V19H5V5H19M19 3H5C3.89 3 3 3.89 3 5V19C3 20.11 3.89 21 5 21H19C20.11 21 21 20.11 21 19V5C21 3.89 20.11 3 19 3M17 17H7V15H17V17M17 13H7V11H17V13M17 9H7V7H17V9Z',
 	},
 	{
 		href: '/tags',
 		label: 'Tags',
 		activePaths: ['/tags'],
-		icon: 'M5.5 7A1.5 1.5 0 0 1 4 5.5A1.5 1.5 0 0 1 5.5 4A1.5 1.5 0 0 1 7 5.5A1.5 1.5 0 0 1 5.5 7M21.41 11.58L12.41 2.58C12.05 2.22 11.55 2 11 2H4C2.9 2 2 2.9 2 4V11C2 11.55 2.22 12.05 2.59 12.42L11.59 21.42C11.95 21.78 12.45 22 13 22S14.05 21.78 14.41 21.41L21.41 14.41C21.78 14.05 22 13.55 22 13S21.78 11.95 21.41 11.58M13 20L4 11V4H11L20 13L13 20Z',
 	},
 	{
 		href: '/search',
 		label: 'Search',
 		activePaths: ['/search'],
-		icon: 'M9.5 3A6.5 6.5 0 0 1 16 9.5C16 11.11 15.41 12.59 14.44 13.73L14.71 14H15.5L20.5 19L19 20.5L14 15.5V14.71L13.73 14.44C12.59 15.41 11.11 16 9.5 16A6.5 6.5 0 0 1 3 9.5A6.5 6.5 0 0 1 9.5 3M9.5 5C7 5 5 7 5 9.5S7 14 9.5 14S14 12 14 9.5S12 5 9.5 5Z',
 	},
 	{
 		href: '/about',
 		label: 'About',
 		activePaths: ['/about'],
-		icon: 'M12 2A10 10 0 0 1 22 12A10 10 0 0 1 12 22A10 10 0 0 1 2 12A10 10 0 0 1 12 2M12 4A8 8 0 0 0 4 12C4 14.09 4.8 16 6.11 17.43C7.02 16 9.22 15 12 15S16.98 16 17.89 17.43C19.2 16 20 14.09 20 12A8 8 0 0 0 12 4M12 6A3.5 3.5 0 0 1 15.5 9.5A3.5 3.5 0 0 1 12 13A3.5 3.5 0 0 1 8.5 9.5A3.5 3.5 0 0 1 12 6M12 8A1.5 1.5 0 0 0 10.5 9.5A1.5 1.5 0 0 0 12 11A1.5 1.5 0 0 0 13.5 9.5A1.5 1.5 0 0 0 12 8Z',
 	},
 ];
 
@@ -49,12 +45,7 @@ const isActive = (activePaths: string[]) =>
 		<nav class="header-nav">
 			{
 				links.map((link) => (
-					<HeaderNavItem
-						href={link.href}
-						label={link.label}
-						icon={link.icon}
-						active={isActive(link.activePaths)}
-					/>
+					<HeaderNavItem href={link.href} label={link.label} active={isActive(link.activePaths)} />
 				))
 			}
 		</nav>

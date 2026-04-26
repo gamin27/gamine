@@ -2,11 +2,10 @@
 interface Props {
 	href: string;
 	label: string;
-	icon: string;
 	active: boolean;
 }
 
-const { href, label, icon, active } = Astro.props;
+const { href, label, active } = Astro.props;
 ---
 
 <a
@@ -16,9 +15,6 @@ const { href, label, icon, active } = Astro.props;
 	aria-current={active ? 'page' : undefined}
 	aria-label={label}
 >
-	<svg class="tab-icon" viewBox="0 0 24 24" aria-hidden="true">
-		<path d={icon}></path>
-	</svg>
 	<span class="tab-label">{label}</span>
 </a>
 
@@ -53,12 +49,6 @@ const { href, label, icon, active } = Astro.props;
 		background: currentColor;
 		content: '';
 	}
-	.tab-icon {
-		display: none;
-		width: 1.8rem;
-		height: 1.8rem;
-		fill: currentColor;
-	}
 	@media (max-width: 720px) {
 		.tab-link {
 			margin-right: 16px;
@@ -67,9 +57,6 @@ const { href, label, icon, active } = Astro.props;
 		}
 		.tab-label {
 			display: inline-block;
-		}
-		.tab-icon {
-			display: none;
 		}
 	}
 </style>
