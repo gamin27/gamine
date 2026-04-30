@@ -5,11 +5,20 @@ import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
 import ShareButton from '../components/ShareButton.astro';
+import TableOfContents from '../components/TableOfContents.astro';
 import TagLink from '../components/TagLink.astro';
 
-type Props = CollectionEntry<'blog'>['data'];
+type Heading = {
+	depth: number;
+	slug: string;
+	text: string;
+};
 
-const { title, description, pubDate, updatedDate, tags = [] } = Astro.props;
+type Props = CollectionEntry<'blog'>['data'] & {
+	headings?: Heading[];
+};
+
+const { title, description, pubDate, updatedDate, tags = [], headings = [] } = Astro.props;
 ---
 
 <html lang="ja">
@@ -30,11 +39,26 @@ const { title, description, pubDate, updatedDate, tags = [] } = Astro.props;
 				margin: 0;
 				padding: 0;
 			}
-			.prose {
-				width: 720px;
-				max-width: calc(100% - 64px);
+			.article-shell {
+				display: grid;
+				grid-template-columns: minmax(180px, 240px) minmax(0, 720px);
+				gap: 48px;
+				width: min(100% - 64px, 1008px);
 				margin: auto;
 				padding: 48px 0;
+			}
+			.toc-desktop {
+				position: sticky;
+				top: 96px;
+				align-self: start;
+				padding-top: 4px;
+			}
+			.toc-mobile {
+				display: none;
+			}
+			.prose {
+				width: 100%;
+				min-width: 0;
 				color: rgb(var(--gray-dark));
 				font-size: 18px;
 			}
@@ -65,6 +89,7 @@ const { title, description, pubDate, updatedDate, tags = [] } = Astro.props;
 				margin-top: 1rem;
 			}
 			.prose :global(h2) {
+				scroll-margin-top: 112px;
 				padding-bottom: 0.35rem;
 				border-bottom: 1px solid rgba(var(--gray), 0.35);
 				font-size: 24px;
@@ -88,10 +113,20 @@ const { title, description, pubDate, updatedDate, tags = [] } = Astro.props;
 			.prose :global(blockquote) {
 				border-left-color: rgb(var(--gray));
 			}
-			@media (max-width: 720px) {
-				.prose {
-					max-width: calc(100% - 32px);
+			@media (max-width: 960px) {
+				.article-shell {
+					display: block;
+					width: calc(100% - 32px);
 					padding: 16px 0;
+				}
+				.toc-desktop {
+					display: none;
+				}
+				.toc-mobile {
+					display: block;
+					margin: 32px 0 40px;
+				}
+				.prose {
 					font-size: 16px;
 				}
 			}
@@ -102,31 +137,39 @@ const { title, description, pubDate, updatedDate, tags = [] } = Astro.props;
 		<Header />
 		<main>
 			<article data-pagefind-body>
-				<div class="prose">
-					<div class="title">
-						<h1>{title}</h1>
-						<div class="date">
-							<FormattedDate date={pubDate} />
+				<div class="article-shell">
+					<aside class="toc-desktop">
+						<TableOfContents headings={headings} />
+					</aside>
+					<div class="prose">
+						<div class="title">
+							<h1>{title}</h1>
+							<div class="date">
+								<FormattedDate date={pubDate} />
+								{
+									updatedDate && (
+										<div class="last-updated-on">
+											Last updated on <FormattedDate date={updatedDate} />
+										</div>
+									)
+								}
+							</div>
 							{
-								updatedDate && (
-									<div class="last-updated-on">
-										Last updated on <FormattedDate date={updatedDate} />
+								tags.length > 0 && (
+									<div class="tags">
+										{tags.map((tag) => (
+											<TagLink tag={tag} />
+										))}
 									</div>
 								)
 							}
 						</div>
-						{
-							tags.length > 0 && (
-								<div class="tags">
-									{tags.map((tag) => (
-										<TagLink tag={tag} />
-									))}
-								</div>
-							)
-						}
+						<div class="toc-mobile">
+							<TableOfContents headings={headings} />
+						</div>
+						<slot />
+						<ShareButton />
 					</div>
-					<slot />
-					<ShareButton />
 				</div>
 			</article>
 		</main>
