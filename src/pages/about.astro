@@ -8,6 +8,25 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 const features =
 	'要件を理解し、構造を把握してUIに落とし込むこと。正しいものを正しく作ること。デザインシステム・Storybookと連携し、AIエージェントによるUI設計を仕組み化すること。';
 
+const summaries = [
+	{
+		title: '取り組んでいること',
+		items: [
+			'フロントエンドとUIデザインの橋渡し',
+			'Figma, Design System, Storybookを活用したUI品質の向上',
+			'AIエージェントによるUI設計・実装フローの仕組み化',
+		],
+	},
+	{
+		title: '興味があること',
+		items: [
+			'プロダクトの要件を整理し、使いやすい画面へ落とし込むこと',
+			'デザインシステムとコンポーネント設計',
+			'Astroのような静的サイトジェネレータでの、表現と性能の両立',
+		],
+	},
+];
+
 const careers = [
 	{
 		period: ['2021年1月 -', '現在'],
@@ -26,7 +45,7 @@ const careers = [
 			{
 				term: '活動',
 				description:
-					'フロントエンドどUIデザインをつなぎ、Figma, Design System, Storybookを活用して、UIの品質向上と開発効率化に取り組んでいます。',
+					'フロントエンドとUIデザインをつなぎ、Figma, Design System, Storybookを活用して、UIの品質向上と開発効率化に取り組んでいます。',
 			},
 		],
 	},
@@ -91,6 +110,10 @@ const careers = [
 				gap: 0.4em;
 				font-size: 32px;
 			}
+			.profile-heading {
+				display: grid;
+				gap: 12px;
+			}
 			.profile-icon {
 				width: 64px;
 				height: 64px;
@@ -103,6 +126,14 @@ const careers = [
 				color: rgb(var(--black));
 				font-size: 1em;
 				line-height: 1.2;
+			}
+			.profile-description {
+				margin: 0;
+				max-width: 760px;
+				color: rgb(var(--black));
+				font-size: 20px;
+				font-weight: 700;
+				line-height: 1.8;
 			}
 			.hero {
 				max-width: 760px;
@@ -131,6 +162,44 @@ const careers = [
 				font-size: 20px;
 				font-weight: 700;
 				line-height: 2;
+			}
+			.about-summary {
+				display: grid;
+				gap: 32px;
+			}
+			.summary-group {
+				min-width: 0;
+			}
+			.summary-group h2 {
+				margin: 0 0 16px;
+				color: rgb(var(--black));
+				font-size: 22px;
+				line-height: 1.4;
+			}
+			.summary-list {
+				display: grid;
+				gap: 10px;
+				margin: 0;
+				padding: 0;
+				list-style: none;
+				font-size: 17px;
+				font-weight: 700;
+				line-height: 1.7;
+			}
+			.summary-list li {
+				position: relative;
+				padding-left: 18px;
+				overflow-wrap: anywhere;
+			}
+			.summary-list li::before {
+				position: absolute;
+				top: 0.78em;
+				left: 0;
+				width: 6px;
+				height: 6px;
+				border-radius: 50%;
+				background: var(--brand);
+				content: '';
 			}
 			.timeline {
 				display: grid;
@@ -224,6 +293,9 @@ const careers = [
 				.profile {
 					font-size: 28px;
 				}
+				.profile-description {
+					font-size: 18px;
+				}
 				.hero {
 					margin-left: 0;
 				}
@@ -233,6 +305,12 @@ const careers = [
 				.hero-content p {
 					font-size: 18px;
 					line-height: 1.8;
+				}
+				.summary-group h2 {
+					font-size: 20px;
+				}
+				.summary-list {
+					font-size: 16px;
 				}
 				.timeline {
 					gap: 40px;
@@ -253,10 +331,30 @@ const careers = [
 		<Header />
 		<Main width="960px">
 			<section class="about">
-				<div class="profile">
-					<img class="profile-icon" src="/favicon.png" alt="" />
-					<h1>gamine</h1>
+				<div class="profile-heading">
+					<div class="profile">
+						<img class="profile-icon" src="/favicon.png" alt="" />
+						<h1>gamine</h1>
+					</div>
+					<p class="profile-description">
+						デザインエンジニアっぽいフロントエンドエンジニア。なぜこのUIなのかを言語化し、仕組み化します。
+					</p>
 				</div>
+
+				<section class="about-summary" aria-label="いまの関心">
+					{
+						summaries.map((summary) => (
+							<section class="summary-group">
+								<h2>{summary.title}</h2>
+								<ul class="summary-list">
+									{summary.items.map((item) => (
+										<li>{item}</li>
+									))}
+								</ul>
+							</section>
+						))
+					}
+				</section>
 
 				<div class="hero">
 					<div class="hero-content">
