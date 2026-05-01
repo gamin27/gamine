@@ -21,7 +21,9 @@ tags: ['astro', 'blog', 'vercel', 'getting-started']
 
 ## Astroとの出会い
 
-[この動画](https://www.youtube.com/watch?v=gJXajCwXgHQ)に出会い、Astroを知った。衝撃的だった。
+https://www.youtube.com/watch?v=gJXajCwXgHQ
+
+この動画に出会い、Astroを知った。衝撃的だった。
 
 HTMLファーストで構成されている。つまり、重くなりがちなJavaScriptを（開発者が明示的に追加しない限り）使わず、100%静的なHTMLを出力する。
 
