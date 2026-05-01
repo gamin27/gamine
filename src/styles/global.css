@@ -184,10 +184,21 @@ hr {
 	}
 	.link-card {
 		grid-template-columns: minmax(0, 1fr) 96px;
-		min-height: 96px;
+		height: 96px;
+		min-height: 0;
 	}
 	.link-card-body {
+		gap: 6px;
+		align-content: center;
+		overflow: hidden;
 		padding: 14px;
+	}
+	.link-card-description {
+		display: none;
+	}
+	.link-card-thumbnail {
+		width: 96px;
+		height: 96px;
 	}
 }
 
