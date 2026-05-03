@@ -18,29 +18,84 @@ const tocHeadings = headings.filter((heading) => heading.depth === 2);
 		<nav class="toc" aria-label="目次" data-pagefind-ignore>
 			<details open>
 				<summary>
-					<svg class="toc-icon" viewBox="0 0 24 24" aria-hidden="true">
-						<path d="M4 7h16M4 12h12M4 17h8" />
-					</svg>
 					<span>目次</span>
 					<svg class="toc-chevron" viewBox="0 0 24 24" aria-hidden="true">
 						<path d="m6 9 6 6 6-6" />
 					</svg>
 				</summary>
-				<ol>
-					{tocHeadings.map((heading, index) => (
-						<li>
-							<a href={`#${heading.slug}`} class:list={{ 'is-active': index === 0 }}>
-								{heading.text}
-							</a>
-						</li>
-					))}
-				</ol>
+				<div class="toc-content">
+					<ol>
+						{tocHeadings.map((heading, index) => (
+							<li>
+								<a href={`#${heading.slug}`} class:list={{ 'is-active': index === 0 }}>
+									{heading.text}
+								</a>
+							</li>
+						))}
+					</ol>
+				</div>
 			</details>
 		</nav>
 	)
 }
 
 <script>
+	const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+	document.querySelectorAll<HTMLDetailsElement>('.toc details').forEach((details) => {
+		const summary = details.querySelector('summary');
+		const content = details.querySelector<HTMLElement>('.toc-content');
+
+		if (!summary || !content) {
+			return;
+		}
+
+		summary.addEventListener('click', (event) => {
+			event.preventDefault();
+
+			if (content.dataset.animating === 'true') {
+				return;
+			}
+
+			if (reduceMotion.matches) {
+				details.open = !details.open;
+				return;
+			}
+
+			content.dataset.animating = 'true';
+
+			if (details.open) {
+				content.style.height = `${content.scrollHeight}px`;
+				void content.offsetHeight;
+				content.style.height = '0px';
+
+				content.addEventListener(
+					'transitionend',
+					() => {
+						details.open = false;
+						content.style.height = '';
+						content.dataset.animating = 'false';
+					},
+					{ once: true },
+				);
+			} else {
+				details.open = true;
+				content.style.height = '0px';
+				void content.offsetHeight;
+				content.style.height = `${content.scrollHeight}px`;
+
+				content.addEventListener(
+					'transitionend',
+					() => {
+						content.style.height = '';
+						content.dataset.animating = 'false';
+					},
+					{ once: true },
+				);
+			}
+		});
+	});
+
 	const tocLinks = Array.from<HTMLAnchorElement>(document.querySelectorAll('.toc a'));
 	const targetHeadings = tocLinks
 		.map((link) => {
@@ -102,9 +157,9 @@ const tocHeadings = headings.filter((heading) => heading.depth === 2);
 		display: inline-flex;
 		align-items: center;
 		gap: 12px;
-		margin-bottom: 24px;
+		margin-bottom: 0;
 		color: rgb(var(--gray-dark));
-		font-size: 22px;
+		font-size: 16px;
 		line-height: 1.4;
 		cursor: pointer;
 		list-style: none;
@@ -112,7 +167,6 @@ const tocHeadings = headings.filter((heading) => heading.depth === 2);
 	summary::-webkit-details-marker {
 		display: none;
 	}
-	.toc-icon,
 	.toc-chevron {
 		width: 22px;
 		height: 22px;
@@ -130,11 +184,15 @@ const tocHeadings = headings.filter((heading) => heading.depth === 2);
 	details:not([open]) .toc-chevron {
 		transform: rotate(-90deg);
 	}
+	.toc-content {
+		overflow: hidden;
+		transition: height var(--transition-hover);
+	}
 	ol {
 		display: grid;
 		gap: 8px;
 		margin: 0;
-		padding: 0;
+		padding: 16px 0 0;
 		list-style: none;
 	}
 	a {
@@ -157,10 +215,10 @@ const tocHeadings = headings.filter((heading) => heading.depth === 2);
 	a.is-active {
 		color: var(--brand);
 	}
-	@media (max-width: 960px) {
-		summary {
-			margin-bottom: 20px;
-			font-size: 20px;
+	@media (prefers-reduced-motion: reduce) {
+		.toc-content,
+		.toc-chevron {
+			transition: none;
 		}
 	}
 </style>
