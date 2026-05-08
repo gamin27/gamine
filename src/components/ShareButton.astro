@@ -1,10 +1,33 @@
 ---
 import Tooltip from './Tooltip.astro';
 
+interface Props {
+	title: string;
+}
+
+const { title } = Astro.props;
 const tooltipId = 'share-copy-tooltip';
+const shareURL = new URL(Astro.url.pathname, Astro.site);
+const xShareURL = `https://x.com/intent/tweet?${new URLSearchParams({
+	text: title,
+	url: shareURL.href,
+})}`;
 ---
 
 <div class="share">
+	<a
+		class="share-button"
+		href={xShareURL}
+		target="_blank"
+		rel="noopener noreferrer"
+		aria-label="Xで共有"
+	>
+		<svg viewBox="0 0 24 24" aria-hidden="true">
+			<path
+				d="M18.9 2H22.2L14.9 10.3L23.5 22H16.8L11.5 15.1L5.5 22H2.2L10 13.1L1.7 2H8.6L13.3 8.2L18.9 2ZM17.7 19.9H19.5L7.6 4H5.7L17.7 19.9Z"
+			></path>
+		</svg>
+	</a>
 	<div class="share-control">
 		<button
 			class="share-button"
@@ -24,7 +47,7 @@ const tooltipId = 'share-copy-tooltip';
 </div>
 
 <script>
-	const copyText = async (text) => {
+	const copyText = async (text: string) => {
 		if (navigator.clipboard?.writeText) {
 			await navigator.clipboard.writeText(text);
 			return;
@@ -67,7 +90,9 @@ const tooltipId = 'share-copy-tooltip';
 <style>
 	.share {
 		display: flex;
+		gap: 12px;
 		justify-content: flex-end;
+		align-items: center;
 		margin-top: 56px;
 	}
 	.share-control {
@@ -83,6 +108,7 @@ const tooltipId = 'share-copy-tooltip';
 		background: transparent;
 		color: rgb(var(--gray));
 		cursor: pointer;
+		text-decoration: none;
 	}
 	.share-button:hover {
 		color: rgb(var(--black));
