@@ -7,7 +7,7 @@ interface Props {
 const { id, text } = Astro.props;
 ---
 
-<span id={id} class="tooltip" role="status" aria-live="polite" popover>
+<span id={id} class="tooltip" role="status" aria-live="polite" popover="manual">
 	<span>{text}</span>
 	<span class="tooltip-arrow" aria-hidden="true"></span>
 </span>
