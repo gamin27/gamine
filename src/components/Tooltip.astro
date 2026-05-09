@@ -7,29 +7,33 @@ interface Props {
 const { id, text } = Astro.props;
 ---
 
-<span id={id} class="tooltip" role="status" aria-live="polite" hidden>{text}</span>
+<span id={id} class="tooltip" role="status" aria-live="polite" popover>
+	<span>{text}</span>
+	<span class="tooltip-arrow" aria-hidden="true"></span>
+</span>
 
 <style>
 	.tooltip {
 		position: absolute;
-		right: 0;
-		bottom: calc(100% + 10px);
+		inset: auto;
+		position-area: top span-left;
+		justify-self: end;
 		z-index: 1;
 		width: max-content;
 		max-width: min(280px, calc(100vw - 48px));
+		margin: 0 0 10px;
 		padding: 8px 10px;
+		border: 0;
 		border-radius: 4px;
 		background: var(--brand);
 		color: var(--bg);
 		font-size: 13px;
 		font-weight: 700;
 		line-height: 1.5;
+		overflow: visible;
 		box-shadow: 0 8px 24px rgba(var(--gray-dark), 0.18);
 	}
-	.tooltip[hidden] {
-		display: none;
-	}
-	.tooltip::after {
+	.tooltip-arrow {
 		position: absolute;
 		right: 12px;
 		bottom: -5px;
