@@ -20,6 +20,9 @@ run_script() {
 		lint)
 			node ./node_modules/.bin/eslint .
 			;;
+		format)
+			node ./node_modules/.bin/prettier --write .
+			;;
 		format:check)
 			node ./node_modules/.bin/prettier --check .
 			;;
@@ -30,5 +33,22 @@ run_script() {
 	esac
 }
 
+format_staged() {
+	files="$(git diff --cached --name-only --diff-filter=ACMR | grep -E '\.(astro|css|html|js|jsx|json|md|mdx|mjs|cjs|ts|tsx|yaml|yml)$' || true)"
+
+	if [ -z "$files" ]; then
+		return
+	fi
+
+	if command -v npm >/dev/null 2>&1; then
+		printf '%s\n' "$files" | xargs npm exec -- prettier --write
+	else
+		printf '%s\n' "$files" | xargs node ./node_modules/.bin/prettier --write
+	fi
+
+	printf '%s\n' "$files" | xargs git add
+}
+
+format_staged
 run_script lint
 run_script format:check
