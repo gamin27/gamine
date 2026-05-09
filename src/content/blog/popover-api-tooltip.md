@@ -226,6 +226,6 @@ tooltip.hidePopover()
 popovertargetでHTML上に関係を書く
 ```
 
-Popover APIを使う価値は、表示・非表示のコードが少し短くなることだけではありません。
+Popover APIの良さは、開閉できる要素と、それを操作するボタンの関係をHTML上に書けることです。
 
-**この要素は一時的に前面へ出るUIで、このボタンから操作されるものだ**という意味を、HTMLとブラウザ標準の仕組みに乗せられることが大きいです。
+表示状態も `:popover-open` や `showPopover()` / `hidePopover()` で扱えるので、`hidden` を直接切り替えるよりも、ブラウザ標準の開閉UIとして整理できます。
