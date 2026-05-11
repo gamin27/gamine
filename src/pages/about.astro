@@ -5,10 +5,16 @@ import Header from '../components/Header.astro';
 import Main from '../components/Main.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 
-const features =
-	'要件を理解し、構造を把握してUIに落とし込むこと。正しいものを正しく作ること。デザインシステム・Storybookと連携し、AIエージェントによるUI設計を仕組み化すること。';
-
 const summaries = [
+	{
+		title: '大切にしていること',
+		items: [
+			'不整合のないプロダクトを作ること。',
+			'なぜこの機能が必要なのか、なぜこの動線なのかを考えること。',
+			'統一感のある構造を維持すること',
+			'    表面の綺麗さではなく、構造から立ち上がる美しさを大切にすること',
+		],
+	},
 	{
 		title: '取り組んでいること',
 		items: [
@@ -341,7 +347,7 @@ const careers = [
 						<h1>gamine</h1>
 					</div>
 					<p class="profile-description">
-						デザインエンジニアっぽいフロントエンドエンジニア。なぜこのUIなのかを言語化し、仕組み化します。
+						整合性を保ち、思想をUIに通わせるフロントエンドエンジニア。デザインエンジニアに興味を持って活動しています。
 					</p>
 				</div>
 
@@ -359,15 +365,6 @@ const careers = [
 						))
 					}
 				</section>
-
-				<div class="hero">
-					<div class="hero-content">
-						<h2>この先やってみたいこと</h2>
-						<p>
-							{features}
-						</p>
-					</div>
-				</div>
 
 				<section class="timeline-section" aria-labelledby="timeline-title">
 					<h2 id="timeline-title" class="timeline-title">経歴</h2>
