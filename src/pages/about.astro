@@ -3,6 +3,7 @@ import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
 import Main from '../components/Main.astro';
+import PageOpeningCurtain from '../components/PageOpeningCurtain.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 
 const summaries = [
@@ -338,6 +339,7 @@ const careers = [
 		</style>
 	</head>
 	<body>
+		<PageOpeningCurtain />
 		<Header />
 		<Main width="960px">
 			<section class="about">

@@ -1,0 +1,117 @@
+---
+const brandText = 'gamine.blog';
+---
+
+<div class="page-opening-curtain" aria-hidden="true"></div>
+<div class="opening-brand" data-text={brandText} aria-hidden="true">{brandText}</div>
+
+<style>
+	:global(:root) {
+		--opening-delay: 0.02s;
+		--opening-duration: 0.95s;
+		--opening-easing: cubic-bezier(0.76, 0, 0.24, 1);
+	}
+
+	.page-opening-curtain {
+		position: fixed;
+		inset: 0;
+		z-index: 9998;
+		background: var(--primary-color, var(--brand));
+		pointer-events: none;
+		visibility: visible;
+		animation:
+			curtain-open var(--opening-duration) var(--opening-easing) var(--opening-delay) forwards,
+			opening-hide 0s linear calc(var(--opening-delay) + var(--opening-duration) + 0.08s) forwards;
+		will-change: clip-path;
+	}
+
+	.opening-brand {
+		position: fixed;
+		inset: 0;
+		z-index: 9999;
+		color: transparent;
+		font-size: 24px;
+		font-weight: 700;
+		line-height: 1;
+		pointer-events: none;
+		visibility: visible;
+		white-space: nowrap;
+		animation: opening-hide 0s linear calc(var(--opening-delay) + var(--opening-duration) + 0.14s)
+			forwards;
+	}
+
+	.opening-brand::before,
+	.opening-brand::after {
+		position: absolute;
+		inset: 0;
+		box-sizing: border-box;
+		padding: 16px 0 0 max(32px, calc((100vw - 1120px) / 2));
+		content: attr(data-text);
+	}
+
+	.opening-brand::before {
+		color: var(--brand);
+	}
+
+	.opening-brand::after {
+		color: var(--bg);
+		clip-path: inset(0 0 0 0);
+		animation: curtain-open var(--opening-duration) var(--opening-easing) var(--opening-delay)
+			forwards;
+		will-change: clip-path;
+	}
+
+	:global([data-site-header] .brand) {
+		visibility: hidden;
+		animation: header-brand-show 0s linear
+			calc(var(--opening-delay) + var(--opening-duration) + 0.08s) forwards;
+	}
+
+	@keyframes curtain-open {
+		0% {
+			clip-path: inset(0 0 0 0);
+		}
+		100% {
+			clip-path: inset(0 0 0 100%);
+		}
+	}
+
+	@keyframes opening-hide {
+		100% {
+			visibility: hidden;
+		}
+	}
+
+	@keyframes header-brand-show {
+		100% {
+			visibility: visible;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.page-opening-curtain,
+		.opening-brand,
+		.opening-brand::before,
+		.opening-brand::after,
+		:global([data-site-header] .brand) {
+			animation: none;
+		}
+
+		.page-opening-curtain,
+		.opening-brand {
+			display: none;
+		}
+
+		:global([data-site-header] .brand) {
+			visibility: visible;
+		}
+	}
+
+	@media (max-width: 720px) {
+		.opening-brand::before,
+		.opening-brand::after {
+			padding-top: 14px;
+			padding-left: 16px;
+		}
+	}
+</style>
