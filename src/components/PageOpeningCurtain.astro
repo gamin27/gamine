@@ -32,11 +32,11 @@ const brandText = 'gamine.blog';
 		color: transparent;
 		font-size: 24px;
 		font-weight: 700;
-		line-height: 1.25;
+		line-height: 1;
 		pointer-events: none;
 		visibility: visible;
 		white-space: nowrap;
-		animation: opening-hide 0s linear calc(var(--opening-delay) + var(--opening-duration) + 0.14s)
+		animation: opening-hide 0s linear calc(var(--opening-delay) + var(--opening-duration) + 0.08s)
 			forwards;
 	}
 
@@ -47,6 +47,7 @@ const brandText = 'gamine.blog';
 		box-sizing: border-box;
 		padding: 16px 0 0 max(32px, calc((100vw - 1120px) / 2));
 		content: attr(data-text);
+		overflow: visible;
 	}
 
 	.opening-brand::before {
