@@ -110,17 +110,6 @@ const careers = [
 			.about {
 				display: grid;
 				gap: 56px;
-				animation: about-fade-in 180ms ease-out both;
-			}
-			@keyframes about-fade-in {
-				from {
-					opacity: 0;
-					transform: translateY(4px);
-				}
-				to {
-					opacity: 1;
-					transform: translateY(0);
-				}
 			}
 			.profile {
 				display: flex;
@@ -344,11 +333,6 @@ const careers = [
 				}
 				.details-row {
 					grid-template-columns: 1fr;
-				}
-			}
-			@media (prefers-reduced-motion: reduce) {
-				.about {
-					animation: none;
 				}
 			}
 		</style>
