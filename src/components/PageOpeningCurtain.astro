@@ -3,7 +3,7 @@ const brandText = 'gamine.blog';
 ---
 
 <div class="page-opening-curtain" aria-hidden="true"></div>
-<div class="opening-brand" data-text={brandText} aria-hidden="true">{brandText}</div>
+<div class="opening-brand" data-text={brandText} aria-hidden="true"></div>
 
 <style>
 	:global(:root) {
@@ -40,7 +40,6 @@ const brandText = 'gamine.blog';
 			forwards;
 	}
 
-	.opening-brand::before,
 	.opening-brand::after {
 		position: absolute;
 		inset: 0;
@@ -50,22 +49,12 @@ const brandText = 'gamine.blog';
 		overflow: visible;
 	}
 
-	.opening-brand::before {
-		color: var(--brand);
-	}
-
 	.opening-brand::after {
 		color: var(--bg);
 		clip-path: inset(0 0 0 0);
 		animation: curtain-open var(--opening-duration) var(--opening-easing) var(--opening-delay)
 			forwards;
 		will-change: clip-path;
-	}
-
-	:global([data-site-header] .brand) {
-		visibility: hidden;
-		animation: header-brand-show 0s linear
-			calc(var(--opening-delay) + var(--opening-duration) + 0.08s) forwards;
 	}
 
 	@keyframes curtain-open {
@@ -83,18 +72,10 @@ const brandText = 'gamine.blog';
 		}
 	}
 
-	@keyframes header-brand-show {
-		100% {
-			visibility: visible;
-		}
-	}
-
 	@media (prefers-reduced-motion: reduce) {
 		.page-opening-curtain,
 		.opening-brand,
-		.opening-brand::before,
-		.opening-brand::after,
-		:global([data-site-header] .brand) {
+		.opening-brand::after {
 			animation: none;
 		}
 
@@ -102,14 +83,9 @@ const brandText = 'gamine.blog';
 		.opening-brand {
 			display: none;
 		}
-
-		:global([data-site-header] .brand) {
-			visibility: visible;
-		}
 	}
 
 	@media (max-width: 720px) {
-		.opening-brand::before,
 		.opening-brand::after {
 			padding-top: 14px;
 			padding-left: 16px;
