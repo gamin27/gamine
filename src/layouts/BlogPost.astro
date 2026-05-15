@@ -172,7 +172,7 @@ const hasTableOfContents = headings.some((heading) => heading.depth === 2);
 				.mobile-toc-toggle {
 					position: fixed;
 					right: 16px;
-					bottom: 16px;
+					bottom: calc(24px + env(safe-area-inset-bottom));
 					z-index: 13;
 					display: grid;
 					place-items: center;
