@@ -68,7 +68,7 @@ const hasTableOfContents = headings.some((heading) => heading.depth === 2);
 			.mobile-page-underlay {
 				display: none;
 			}
-			.mobile-toc-toggle {
+			.mobile-toc-control {
 				display: none;
 			}
 			.prose {
@@ -138,11 +138,11 @@ const hasTableOfContents = headings.some((heading) => heading.depth === 2);
 					position: relative;
 					z-index: 3;
 				}
-				body.is-mobile-toc-open .page-frame,
-				body.is-mobile-toc-open .mobile-page-underlay {
+				body:has(#mobile-toc-toggle-state:checked) .page-frame,
+				body:has(#mobile-toc-toggle-state:checked) .mobile-page-underlay {
 					transform: translateX(min(80vw, 320px));
 				}
-				body.is-mobile-toc-open .page-frame {
+				body:has(#mobile-toc-toggle-state:checked) .page-frame {
 					box-shadow: -12px 0 32px rgba(var(--gray-dark), 0.28);
 				}
 				.toc-desktop {
@@ -213,14 +213,15 @@ const hasTableOfContents = headings.some((heading) => heading.depth === 2);
 					stroke-linejoin: round;
 					stroke-width: 2;
 				}
-				.mobile-toc-toggle-close {
+				.mobile-toc-close,
+				.mobile-toc-toggle-state {
 					display: none;
 				}
-				body.is-mobile-toc-open .mobile-toc-toggle-menu {
+				body:has(#mobile-toc-toggle-state:checked) .mobile-toc-open {
 					display: none;
 				}
-				body.is-mobile-toc-open .mobile-toc-toggle-close {
-					display: block;
+				body:has(#mobile-toc-toggle-state:checked) .mobile-toc-close {
+					display: grid;
 				}
 				.mobile-toc-toggle:focus-visible {
 					outline: 3px solid rgba(var(--gray), 0.32);
@@ -245,34 +246,44 @@ const hasTableOfContents = headings.some((heading) => heading.depth === 2);
 	<body>
 		{
 			hasTableOfContents && (
-				<aside class="toc-mobile" id="mobile-toc-panel" aria-label="モバイル目次">
-					<TableOfContents headings={headings} />
-				</aside>
+				<>
+					<input
+						class="mobile-toc-toggle-state"
+						id="mobile-toc-toggle-state"
+						type="checkbox"
+						aria-hidden="true"
+						data-mobile-toc-toggle-state
+					/>
+					<aside class="toc-mobile" id="mobile-toc-panel" aria-label="モバイル目次">
+						<TableOfContents headings={headings} />
+					</aside>
+					<label
+						class="mobile-toc-toggle mobile-toc-open"
+						for="mobile-toc-toggle-state"
+						aria-label="目次を開く"
+						aria-controls="mobile-toc-panel"
+					>
+						<svg viewBox="0 0 24 24" aria-hidden="true">
+							<path d="M4 6h16" />
+							<path d="M4 12h16" />
+							<path d="M4 18h10" />
+						</svg>
+					</label>
+					<label
+						class="mobile-toc-toggle mobile-toc-close"
+						for="mobile-toc-toggle-state"
+						aria-label="目次を閉じる"
+						aria-controls="mobile-toc-panel"
+					>
+						<svg viewBox="0 0 24 24" aria-hidden="true">
+							<path d="M18 6 6 18" />
+							<path d="m6 6 12 12" />
+						</svg>
+					</label>
+				</>
 			)
 		}
 		{hasTableOfContents && <div class="mobile-page-underlay" aria-hidden="true" />}
-		{
-			hasTableOfContents && (
-				<button
-					class="mobile-toc-toggle"
-					type="button"
-					aria-label="目次を開く"
-					aria-controls="mobile-toc-panel"
-					aria-expanded="false"
-					data-mobile-toc-toggle
-				>
-					<svg class="mobile-toc-toggle-menu" viewBox="0 0 24 24" aria-hidden="true">
-						<path d="M4 6h16" />
-						<path d="M4 12h16" />
-						<path d="M4 18h10" />
-					</svg>
-					<svg class="mobile-toc-toggle-close" viewBox="0 0 24 24" aria-hidden="true">
-						<path d="M18 6 6 18" />
-						<path d="m6 6 12 12" />
-					</svg>
-				</button>
-			)
-		}
 		<div class="page-frame">
 			<Header />
 			<main>
@@ -313,60 +324,10 @@ const hasTableOfContents = headings.some((heading) => heading.depth === 2);
 			<Footer />
 		</div>
 		<script>
-			const tocToggle = document.querySelector<HTMLButtonElement>('[data-mobile-toc-toggle]');
+			const mobileTocToggleState = document.querySelector<HTMLInputElement>(
+				'[data-mobile-toc-toggle-state]',
+			);
 			const mobileToc = document.getElementById('mobile-toc-panel');
-			const pageFrame = document.querySelector<HTMLElement>('.page-frame');
-			const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-
-			const setMobileTocState = (isOpen: boolean) => {
-				document.body.classList.toggle('is-mobile-toc-open', isOpen);
-				tocToggle?.setAttribute('aria-expanded', String(isOpen));
-				tocToggle?.setAttribute('aria-label', isOpen ? '目次を閉じる' : '目次を開く');
-				mobileToc?.setAttribute('aria-hidden', String(!isOpen));
-			};
-
-			const afterMobileTocClose = (callback: () => void) => {
-				if (!pageFrame || reduceMotion.matches) {
-					callback();
-					return;
-				}
-
-				const finish = () => {
-					window.clearTimeout(timer);
-					pageFrame.removeEventListener('transitionend', finish);
-					callback();
-				};
-
-				pageFrame.addEventListener('transitionend', finish);
-				const timer = window.setTimeout(finish, 300);
-			};
-
-			const openMobileToc = () => {
-				setMobileTocState(true);
-			};
-
-			const closeMobileToc = (callback?: () => void) => {
-				if (!document.body.classList.contains('is-mobile-toc-open')) {
-					callback?.();
-					return;
-				}
-
-				setMobileTocState(false);
-				afterMobileTocClose(() => {
-					callback?.();
-				});
-			};
-
-			mobileToc?.setAttribute('aria-hidden', 'true');
-
-			tocToggle?.addEventListener('click', () => {
-				if (document.body.classList.contains('is-mobile-toc-open')) {
-					closeMobileToc();
-					return;
-				}
-
-				openMobileToc();
-			});
 
 			mobileToc?.querySelectorAll('a').forEach((link) => {
 				link.addEventListener('click', (event) => {
@@ -374,21 +335,19 @@ const hasTableOfContents = headings.some((heading) => heading.depth === 2);
 					const target = targetId ? document.getElementById(targetId) : null;
 
 					if (!target) {
-						closeMobileToc();
+						if (mobileTocToggleState) {
+							mobileTocToggleState.checked = false;
+						}
 						return;
 					}
 
 					event.preventDefault();
 					target.scrollIntoView({ block: 'start' });
-					history.pushState(null, '', link.hash);
-					closeMobileToc();
-				});
-			});
 
-			document.addEventListener('keydown', (event) => {
-				if (event.key === 'Escape') {
-					closeMobileToc();
-				}
+					if (mobileTocToggleState) {
+						mobileTocToggleState.checked = false;
+					}
+				});
 			});
 		</script>
 	</body>
