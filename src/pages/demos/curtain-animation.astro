@@ -1,0 +1,90 @@
+---
+import BaseHead from '../../components/BaseHead.astro';
+import Footer from '../../components/Footer.astro';
+import Header from '../../components/Header.astro';
+import Main from '../../components/Main.astro';
+import PageOpeningCurtain from '../../components/PageOpeningCurtain.astro';
+import { SITE_TITLE } from '../../consts';
+---
+
+<!doctype html>
+<html lang="ja">
+	<head>
+		<BaseHead
+			title={`カーテンアニメーションのデモ | ${SITE_TITLE}`}
+			description="カーテンアニメーションのデモ画面"
+		/>
+		<style>
+			.demo-content {
+				display: grid;
+				gap: 32px;
+			}
+			.demo-heading {
+				display: grid;
+				gap: 12px;
+			}
+			.demo-heading h1 {
+				margin: 0;
+				font-size: 32px;
+				line-height: 1.4;
+			}
+			.demo-heading p,
+			.demo-section p {
+				margin: 0;
+				font-weight: 700;
+				line-height: 1.9;
+			}
+			.demo-section {
+				display: grid;
+				gap: 16px;
+			}
+			.demo-section h2 {
+				margin: 0;
+				font-size: 24px;
+			}
+			.demo-list {
+				display: grid;
+				gap: 12px;
+				margin: 0;
+				padding: 0;
+				list-style: none;
+			}
+			.demo-list li {
+				padding-bottom: 12px;
+				border-bottom: 1px solid rgb(var(--gray-light));
+			}
+			@media (max-width: 720px) {
+				.demo-heading h1 {
+					font-size: 24px;
+				}
+				.demo-section h2 {
+					font-size: 20px;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<PageOpeningCurtain />
+		<Header />
+		<Main>
+			<section class="demo-content">
+				<div class="demo-heading">
+					<h1>カーテンアニメーションのデモ</h1>
+					<p>ページを開くたびに、画面全体を覆うカーテンが左から右へ抜けます。</p>
+				</div>
+				<section class="demo-section">
+					<h2>記事の見出し</h2>
+					<p>
+						本文よりも先に演出が目に入るため、静かに読み始めたいブログでは少し主張が強く感じられます。
+					</p>
+				</section>
+				<ul class="demo-list">
+					<li>デザインのための演出が、読み始める速さを妨げている。</li>
+					<li>ページ移動のたびに同じ動きが入り、ブランドよりも仕掛けが前に出る。</li>
+					<li>読み物中心のサイトでは、余白と速度の方が印象に残ることがある。</li>
+				</ul>
+			</section>
+		</Main>
+		<Footer />
+	</body>
+</html>
