@@ -68,7 +68,7 @@ const hasTableOfContents = headings.some((heading) => heading.depth === 2);
 			.mobile-page-underlay {
 				display: none;
 			}
-			.mobile-toc-control {
+			.mobile-page-dismiss {
 				display: none;
 			}
 			.prose {
@@ -156,6 +156,16 @@ const hasTableOfContents = headings.some((heading) => heading.depth === 2);
 					background: var(--bg);
 					transition: transform 0.24s ease;
 					pointer-events: none;
+				}
+				.mobile-page-dismiss {
+					position: fixed;
+					inset: 0;
+					z-index: 12;
+					transform: translateX(min(80vw, 320px));
+					cursor: pointer;
+				}
+				body:has(#mobile-toc-toggle-state:checked) .mobile-page-dismiss {
+					display: block;
 				}
 				.toc-mobile {
 					display: block;
@@ -283,7 +293,18 @@ const hasTableOfContents = headings.some((heading) => heading.depth === 2);
 				</>
 			)
 		}
-		{hasTableOfContents && <div class="mobile-page-underlay" aria-hidden="true" />}
+		{
+			hasTableOfContents && (
+				<>
+					<div class="mobile-page-underlay" aria-hidden="true" />
+					<label
+						class="mobile-page-dismiss"
+						for="mobile-toc-toggle-state"
+						aria-label="目次を閉じる"
+					/>
+				</>
+			)
+		}
 		<div class="page-frame">
 			<Header />
 			<main>
