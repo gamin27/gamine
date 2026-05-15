@@ -19,6 +19,7 @@ type Props = CollectionEntry<'blog'>['data'] & {
 };
 
 const { title, description, pubDate, updatedDate, tags = [], headings = [] } = Astro.props;
+const hasTableOfContents = headings.some((heading) => heading.depth === 2);
 ---
 
 <html lang="ja">
@@ -39,6 +40,11 @@ const { title, description, pubDate, updatedDate, tags = [], headings = [] } = A
 				margin: 0;
 				padding: 0;
 			}
+			.page-frame {
+				min-height: 100vh;
+				background: var(--bg);
+				transition: transform 0.24s ease;
+			}
 			.article-shell {
 				display: grid;
 				grid-template-columns: minmax(180px, 240px) minmax(0, 720px);
@@ -54,6 +60,9 @@ const { title, description, pubDate, updatedDate, tags = [], headings = [] } = A
 				padding-top: 4px;
 			}
 			.toc-mobile {
+				display: none;
+			}
+			.mobile-toc-toggle {
 				display: none;
 			}
 			.prose {
@@ -119,12 +128,85 @@ const { title, description, pubDate, updatedDate, tags = [], headings = [] } = A
 					width: calc(100% - 32px);
 					padding: 16px 0;
 				}
+				.page-frame {
+					position: relative;
+					z-index: 1;
+				}
+				body.is-mobile-toc-open {
+					overflow: hidden;
+				}
+				body.is-mobile-toc-open .page-frame {
+					transform: translateX(min(80vw, 320px));
+					box-shadow: -12px 0 32px rgba(var(--gray-dark), 0.28);
+				}
 				.toc-desktop {
 					display: none;
 				}
 				.toc-mobile {
 					display: block;
-					margin: 32px 0 40px;
+					position: fixed;
+					inset: 0 auto 0 0;
+					z-index: 1;
+					width: min(80vw, 320px);
+					box-sizing: border-box;
+					overflow-y: auto;
+					padding: 24px 20px;
+					background: var(--brand);
+					color: var(--bg);
+				}
+				.toc-mobile :global(.toc),
+				.toc-mobile :global(.toc summary),
+				.toc-mobile :global(.toc a) {
+					color: var(--bg);
+				}
+				.toc-mobile :global(.toc a:hover) {
+					background-color: rgba(250, 248, 241, 0.16);
+					box-shadow: 0 0 0 4px rgba(250, 248, 241, 0.16);
+					color: var(--bg);
+				}
+				.toc-mobile :global(.toc a.is-active) {
+					background-color: var(--bg);
+					box-shadow: 0 0 0 4px var(--bg);
+					color: var(--brand);
+				}
+				.mobile-toc-toggle {
+					position: fixed;
+					right: 16px;
+					bottom: 16px;
+					z-index: 13;
+					display: grid;
+					place-items: center;
+					width: 48px;
+					height: 48px;
+					padding: 0;
+					border: 1px solid rgba(var(--gray), 0.24);
+					border-radius: 8px;
+					background: var(--bg);
+					color: rgb(var(--gray-dark));
+					box-shadow: 0 4px 12px rgba(var(--gray), 0.12);
+					cursor: pointer;
+				}
+				.mobile-toc-toggle svg {
+					width: 22px;
+					height: 22px;
+					fill: none;
+					stroke: currentColor;
+					stroke-linecap: round;
+					stroke-linejoin: round;
+					stroke-width: 2;
+				}
+				.mobile-toc-toggle-close {
+					display: none;
+				}
+				body.is-mobile-toc-open .mobile-toc-toggle-menu {
+					display: none;
+				}
+				body.is-mobile-toc-open .mobile-toc-toggle-close {
+					display: block;
+				}
+				.mobile-toc-toggle:focus-visible {
+					outline: 3px solid rgba(var(--gray), 0.32);
+					outline-offset: 3px;
 				}
 				.prose {
 					font-size: 16px;
@@ -132,50 +214,143 @@ const { title, description, pubDate, updatedDate, tags = [], headings = [] } = A
 				.title h1 {
 					font-size: 24px;
 				}
+				@media (prefers-reduced-motion: reduce) {
+					.page-frame {
+						transition: none;
+					}
+				}
 			}
 		</style>
 	</head>
 
 	<body>
-		<Header />
-		<main>
-			<article data-pagefind-body>
-				<div class="article-shell">
-					<aside class="toc-desktop">
-						<TableOfContents headings={headings} />
-					</aside>
-					<div class="prose">
-						<div class="title">
-							<h1>{title}</h1>
-							<div class="date">
-								<FormattedDate date={pubDate} />
+		{
+			hasTableOfContents && (
+				<aside class="toc-mobile" id="mobile-toc-panel" aria-label="モバイル目次">
+					<TableOfContents headings={headings} />
+				</aside>
+			)
+		}
+		{
+			hasTableOfContents && (
+				<button
+					class="mobile-toc-toggle"
+					type="button"
+					aria-label="目次を開く"
+					aria-controls="mobile-toc-panel"
+					aria-expanded="false"
+					data-mobile-toc-toggle
+				>
+					<svg class="mobile-toc-toggle-menu" viewBox="0 0 24 24" aria-hidden="true">
+						<path d="M4 6h16" />
+						<path d="M4 12h16" />
+						<path d="M4 18h10" />
+					</svg>
+					<svg class="mobile-toc-toggle-close" viewBox="0 0 24 24" aria-hidden="true">
+						<path d="M18 6 6 18" />
+						<path d="m6 6 12 12" />
+					</svg>
+				</button>
+			)
+		}
+		<div class="page-frame">
+			<Header />
+			<main>
+				<article data-pagefind-body>
+					<div class="article-shell">
+						<aside class="toc-desktop">
+							<TableOfContents headings={headings} />
+						</aside>
+						<div class="prose">
+							<div class="title">
+								<h1>{title}</h1>
+								<div class="date">
+									<FormattedDate date={pubDate} />
+									{
+										updatedDate && (
+											<div class="last-updated-on">
+												Last updated on <FormattedDate date={updatedDate} />
+											</div>
+										)
+									}
+								</div>
 								{
-									updatedDate && (
-										<div class="last-updated-on">
-											Last updated on <FormattedDate date={updatedDate} />
+									tags.length > 0 && (
+										<div class="tags">
+											{tags.map((tag) => (
+												<TagLink tag={tag} />
+											))}
 										</div>
 									)
 								}
 							</div>
-							{
-								tags.length > 0 && (
-									<div class="tags">
-										{tags.map((tag) => (
-											<TagLink tag={tag} />
-										))}
-									</div>
-								)
-							}
+							<slot />
+							<ShareButton title={title} />
 						</div>
-						<div class="toc-mobile">
-							<TableOfContents headings={headings} />
-						</div>
-						<slot />
-						<ShareButton title={title} />
 					</div>
-				</div>
-			</article>
-		</main>
-		<Footer />
+				</article>
+			</main>
+			<Footer />
+		</div>
+		<script>
+			const tocToggle = document.querySelector<HTMLButtonElement>('[data-mobile-toc-toggle]');
+			const mobileToc = document.getElementById('mobile-toc-panel');
+			const pageFrame = document.querySelector<HTMLElement>('.page-frame');
+			const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+			const setMobileTocOpen = (isOpen: boolean) => {
+				document.body.classList.toggle('is-mobile-toc-open', isOpen);
+				tocToggle?.setAttribute('aria-expanded', String(isOpen));
+				tocToggle?.setAttribute('aria-label', isOpen ? '目次を閉じる' : '目次を開く');
+				mobileToc?.setAttribute('aria-hidden', String(!isOpen));
+			};
+
+			const afterMobileTocClose = (callback: () => void) => {
+				if (!pageFrame || reduceMotion.matches) {
+					callback();
+					return;
+				}
+
+				const finish = () => {
+					window.clearTimeout(timer);
+					pageFrame.removeEventListener('transitionend', finish);
+					callback();
+				};
+
+				pageFrame.addEventListener('transitionend', finish);
+				const timer = window.setTimeout(finish, 300);
+			};
+
+			mobileToc?.setAttribute('aria-hidden', 'true');
+
+			tocToggle?.addEventListener('click', () => {
+				setMobileTocOpen(!document.body.classList.contains('is-mobile-toc-open'));
+			});
+
+			mobileToc?.querySelectorAll('a').forEach((link) => {
+				link.addEventListener('click', (event) => {
+					const targetId = decodeURIComponent(link.hash.slice(1));
+					const target = targetId ? document.getElementById(targetId) : null;
+
+					if (!target) {
+						setMobileTocOpen(false);
+						return;
+					}
+
+					event.preventDefault();
+					setMobileTocOpen(false);
+					afterMobileTocClose(() => {
+						target.scrollIntoView({ block: 'start' });
+						history.pushState(null, '', link.hash);
+					});
+				});
+			});
+
+			document.addEventListener('keydown', (event) => {
+				if (event.key === 'Escape') {
+					setMobileTocOpen(false);
+				}
+			});
+		</script>
 	</body>
 </html>
