@@ -34,6 +34,9 @@ const hasTableOfContents = headings.some((heading) => heading.depth === 2);
 			tags={tags}
 		/>
 		<style>
+			html {
+				background: var(--bg);
+			}
 			main {
 				width: 100%;
 				max-width: none;
@@ -60,6 +63,9 @@ const hasTableOfContents = headings.some((heading) => heading.depth === 2);
 				padding-top: 4px;
 			}
 			.toc-mobile {
+				display: none;
+			}
+			.mobile-page-underlay {
 				display: none;
 			}
 			.mobile-toc-toggle {
@@ -130,22 +136,33 @@ const hasTableOfContents = headings.some((heading) => heading.depth === 2);
 				}
 				.page-frame {
 					position: relative;
-					z-index: 1;
+					z-index: 3;
 				}
-				body.is-mobile-toc-open {
-					overflow: hidden;
+				body.is-mobile-toc-open .page-frame,
+				body.is-mobile-toc-open .mobile-page-underlay {
+					transform: translateX(min(80vw, 320px));
 				}
 				body.is-mobile-toc-open .page-frame {
-					transform: translateX(min(80vw, 320px));
 					box-shadow: -12px 0 32px rgba(var(--gray-dark), 0.28);
 				}
 				.toc-desktop {
 					display: none;
 				}
+				.mobile-page-underlay {
+					position: fixed;
+					inset: 0;
+					z-index: 2;
+					display: block;
+					background: var(--bg);
+					transition: transform 0.24s ease;
+					pointer-events: none;
+				}
 				.toc-mobile {
 					display: block;
 					position: fixed;
-					inset: 0 auto 0 0;
+					top: 0;
+					bottom: 0;
+					left: 0;
 					z-index: 1;
 					width: min(80vw, 320px);
 					box-sizing: border-box;
@@ -153,6 +170,7 @@ const hasTableOfContents = headings.some((heading) => heading.depth === 2);
 					padding: 24px 20px;
 					background: var(--brand);
 					color: var(--bg);
+					overscroll-behavior: contain;
 				}
 				.toc-mobile :global(.toc),
 				.toc-mobile :global(.toc summary),
@@ -215,7 +233,8 @@ const hasTableOfContents = headings.some((heading) => heading.depth === 2);
 					font-size: 24px;
 				}
 				@media (prefers-reduced-motion: reduce) {
-					.page-frame {
+					.page-frame,
+					.mobile-page-underlay {
 						transition: none;
 					}
 				}
@@ -231,6 +250,7 @@ const hasTableOfContents = headings.some((heading) => heading.depth === 2);
 				</aside>
 			)
 		}
+		{hasTableOfContents && <div class="mobile-page-underlay" aria-hidden="true" />}
 		{
 			hasTableOfContents && (
 				<button
@@ -298,7 +318,7 @@ const hasTableOfContents = headings.some((heading) => heading.depth === 2);
 			const pageFrame = document.querySelector<HTMLElement>('.page-frame');
 			const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-			const setMobileTocOpen = (isOpen: boolean) => {
+			const setMobileTocState = (isOpen: boolean) => {
 				document.body.classList.toggle('is-mobile-toc-open', isOpen);
 				tocToggle?.setAttribute('aria-expanded', String(isOpen));
 				tocToggle?.setAttribute('aria-label', isOpen ? '目次を閉じる' : '目次を開く');
@@ -321,10 +341,31 @@ const hasTableOfContents = headings.some((heading) => heading.depth === 2);
 				const timer = window.setTimeout(finish, 300);
 			};
 
+			const openMobileToc = () => {
+				setMobileTocState(true);
+			};
+
+			const closeMobileToc = (callback?: () => void) => {
+				if (!document.body.classList.contains('is-mobile-toc-open')) {
+					callback?.();
+					return;
+				}
+
+				setMobileTocState(false);
+				afterMobileTocClose(() => {
+					callback?.();
+				});
+			};
+
 			mobileToc?.setAttribute('aria-hidden', 'true');
 
 			tocToggle?.addEventListener('click', () => {
-				setMobileTocOpen(!document.body.classList.contains('is-mobile-toc-open'));
+				if (document.body.classList.contains('is-mobile-toc-open')) {
+					closeMobileToc();
+					return;
+				}
+
+				openMobileToc();
 			});
 
 			mobileToc?.querySelectorAll('a').forEach((link) => {
@@ -333,22 +374,20 @@ const hasTableOfContents = headings.some((heading) => heading.depth === 2);
 					const target = targetId ? document.getElementById(targetId) : null;
 
 					if (!target) {
-						setMobileTocOpen(false);
+						closeMobileToc();
 						return;
 					}
 
 					event.preventDefault();
-					setMobileTocOpen(false);
-					afterMobileTocClose(() => {
-						target.scrollIntoView({ block: 'start' });
-						history.pushState(null, '', link.hash);
-					});
+					target.scrollIntoView({ block: 'start' });
+					history.pushState(null, '', link.hash);
+					closeMobileToc();
 				});
 			});
 
 			document.addEventListener('keydown', (event) => {
 				if (event.key === 'Escape') {
-					setMobileTocOpen(false);
+					closeMobileToc();
 				}
 			});
 		</script>
