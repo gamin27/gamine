@@ -3,6 +3,7 @@ import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
 import Main from '../components/Main.astro';
+import XIcon from '../components/XIcon.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 
 const summaries = [
@@ -133,6 +134,28 @@ const careers = [
 				color: rgb(var(--black));
 				font-size: 1em;
 				line-height: 1.2;
+			}
+			.profile-social-link {
+				display: inline-flex;
+				align-items: center;
+				gap: 8px;
+				width: fit-content;
+				color: rgb(var(--gray));
+				font-size: 16px;
+				font-weight: 700;
+				line-height: 1.4;
+				text-decoration: none;
+			}
+			.profile-social-link svg {
+				width: 16px;
+				height: 16px;
+			}
+			.profile-social-link:hover {
+				color: rgb(var(--black));
+			}
+			.profile-social-link:focus-visible {
+				outline: 3px solid rgba(var(--gray), 0.32);
+				outline-offset: 3px;
 			}
 			.profile-description {
 				margin: 0;
@@ -349,6 +372,16 @@ const careers = [
 					<p class="profile-description">
 						整合性を保ち、思想をUIに通わせるフロントエンドエンジニア。デザインエンジニアに興味を持って活動しています。
 					</p>
+					<a
+						class="profile-social-link"
+						href="https://x.com/homusuke"
+						target="_blank"
+						rel="noopener noreferrer"
+						aria-label="homusuke on X"
+					>
+						<XIcon />
+						<span>@homusuke</span>
+					</a>
 				</div>
 
 				<section class="about-summary" aria-label="いまの関心">

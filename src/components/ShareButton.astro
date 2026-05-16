@@ -1,5 +1,6 @@
 ---
 import Tooltip from './Tooltip.astro';
+import XIcon from './XIcon.astro';
 
 interface Props {
 	title: string;
@@ -22,11 +23,7 @@ const xShareURL = `https://x.com/intent/tweet?${new URLSearchParams({
 		rel="noopener noreferrer"
 		aria-label="Xで共有"
 	>
-		<svg viewBox="0 0 24 24" aria-hidden="true">
-			<path
-				d="M18.9 2H22.2L14.9 10.3L23.5 22H16.8L11.5 15.1L5.5 22H2.2L10 13.1L1.7 2H8.6L13.3 8.2L18.9 2ZM17.7 19.9H19.5L7.6 4H5.7L17.7 19.9Z"
-			></path>
-		</svg>
+		<XIcon />
 	</a>
 	<div class="share-control">
 		<button
