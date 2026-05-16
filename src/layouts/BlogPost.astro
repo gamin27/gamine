@@ -355,23 +355,12 @@ const hasTableOfContents = headings.some((heading) => heading.depth === 2);
 			const mobileToc = document.getElementById('mobile-toc-panel');
 
 			mobileToc?.querySelectorAll('a').forEach((link) => {
-				link.addEventListener('click', (event) => {
-					const targetId = decodeURIComponent(link.hash.slice(1));
-					const target = targetId ? document.getElementById(targetId) : null;
-
-					if (!target) {
+				link.addEventListener('click', () => {
+					window.requestAnimationFrame(() => {
 						if (mobileTocToggleState) {
 							mobileTocToggleState.checked = false;
 						}
-						return;
-					}
-
-					event.preventDefault();
-					target.scrollIntoView({ block: 'start' });
-
-					if (mobileTocToggleState) {
-						mobileTocToggleState.checked = false;
-					}
+					});
 				});
 			});
 		</script>
