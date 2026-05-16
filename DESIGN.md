@@ -22,6 +22,20 @@ Do not add unnecessary animation.
 
 Motion should be rare, short, and functional. Avoid page-transition effects, decorative movement, loading theatrics, or animation that makes the site feel slower. When motion is used, respect `prefers-reduced-motion`.
 
+## Interaction
+
+Prefer simple, standards-based interactions, but do not treat "JavaScript-free" as a goal above the reading experience.
+
+Small amounts of JavaScript are acceptable when they preserve a quieter, more deliberate interaction that fits the site, such as keeping the mobile table of contents visually tucked beneath the article instead of presenting it as a conventional overlay. In those cases, keep the script narrowly scoped to behavior that HTML and CSS cannot express cleanly.
+
+Use this bar for interactive details:
+
+- The interaction should support reading, scanning, or navigation.
+- The visual behavior should feel calm and intentional, not showy.
+- CSS and browser-native features should carry the layout and animation whenever possible.
+- JavaScript should not grow beyond the minimum needed for the specific interaction.
+- If an interaction starts requiring complex focus management, scroll locking, browser-specific fixes, or broad event handling, reconsider a simpler native pattern such as `popover`, `details`, or a regular link-based flow.
+
 ## Spacing
 
 Use spacing based on multiples of `4px`.
