@@ -2,7 +2,7 @@
 title: 'Popover APIで吹き出しUI（ツールチップ）をシンプルに作る'
 description: 'Popover APIを使って、URLコピー後の吹き出しをブラウザ標準の開閉UIとして扱う。'
 pubDate: 'May 9 2026'
-tags: ['フロントエンド', 'HTML', 'Popover API']
+tags: ['フロントエンド', 'HTML', 'CSS']
 ---
 
 最近、以下のようなポストがありました。
